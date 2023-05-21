@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigate } from "react-router-native";
+
 // Context
 import { UserContext } from "../App.js";
 
-const Login = () => {
+export default function Login() {
   const context = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -20,9 +21,12 @@ const Login = () => {
   const handlePress = () => {
     if (context.userId >= 1 && context.userId <= 10) {
       setErrorMsg(false);
+      context.setIsLogged(true);
       navigate("/home");
     } else {
       setErrorMsg(true);
+      context.setIsLogged(false);
+
     }
   };
 
@@ -50,9 +54,7 @@ const Login = () => {
       </View>
     </SafeAreaView>
   );
-};
-
-export default Login;
+}
 
 const styles = StyleSheet.create({
   container: {

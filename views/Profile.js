@@ -1,16 +1,10 @@
-import { useContext } from "../App.js";
-
 import { StyleSheet, SafeAreaView, View, Text } from "react-native";
 
-import { UserContext } from "../App";
-
-export default function Home() {
-  const context = useContext(UserContext);
-  
+export default function Profile() {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text>Welcome to Homepage !</Text>
+        <Text>Welcome to Profile !</Text>
       </View>
     </SafeAreaView>
   );
