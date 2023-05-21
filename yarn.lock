@@ -4419,7 +4419,7 @@ expo-asset@~8.9.1:
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
 
-expo-cli@^6.3.7:
+expo-cli@6.3.7:
   version "6.3.7"
   resolved "https://registry.yarnpkg.com/expo-cli/-/expo-cli-6.3.7.tgz#89c857b08afddacb9411ee65e1ad60343cae9fe5"
   integrity sha512-ZnNKoNY7BpJA6HS6Ykj9yOxFddeS2xGhfv6w3MDDwPCSZyX5I6b7NxWWORSG7KZhKPQ6v5ZeTCr052IdhDY8FQ==
