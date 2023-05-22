@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { useNavigate } from "react-router-native";
 
@@ -18,22 +18,21 @@ export default function Login() {
 
   const [errorMsg, setErrorMsg] = useState(false);
 
-  const handlePress = () => {
-    if (context.userId >= 1 && context.userId <= 10) {
+  const handleLogin = () => {
+    if (parseInt(context.userId) >= 1 && parseInt(context.userId) <= 10) {
       setErrorMsg(false);
       context.setIsLogged(true);
       navigate("/home");
     } else {
       setErrorMsg(true);
       context.setIsLogged(false);
-
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.subcontainer}>
-        <Text style={styles.title}>Log in</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>React Native Blog</Text>
         <TextInput
           placeholder="Enter your ID"
           placeholderTextColor="#333"
@@ -43,14 +42,12 @@ export default function Login() {
           onChangeText={context.setUserId}
         />
         {errorMsg && (
-          <Text style={styles.errorMsg}>
-            Veuillez entrer un ID entre 1 et 10.
-          </Text>
+          <Text style={styles.errorMsg}>Enter an ID between 1 and 10.</Text>
         )}
 
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <Pressable style={styles.button} onPress={handleLogin}>
           <Text style={styles.btnTxt}>Log in</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -60,26 +57,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#aeecef",
+    backgroundColor: "#f8fcda",
   },
-  subcontainer: {
+  content: {
     width: "90%",
   },
   title: {
-    fontSize: 50,
+    fontSize: 40,
+    fontWeight: "bold",
     textAlign: "center",
+    paddingTop: 10,
     marginBottom: 275,
-    color: "teal",
+    color: "#f17300",
   },
   input: {
     height: 40,
+    fontSize: 16,
+    fontStyle: "italic",
+    color: "#333",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,
   },
   errorMsg: {
-    color: "crimson",
+    color: "#dc143c",
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   btnTxt: {
-    color: "white",
+    color: "#fff",
     fontSize: 20,
   },
 });

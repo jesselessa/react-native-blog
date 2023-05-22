@@ -9,54 +9,53 @@ export default function Navbar() {
 
   return (
     <View style={styles.navbar}>
-      <View style={styles.navLinks}>
-        <TouchableOpacity
-          onPress={() => navigate("/home")}
-          style={styles.navBtn}
-        >
-          <Icon name="home" size={30} color="white" />
-          <Text style={styles.navTxt}>Home</Text>
-        </TouchableOpacity>
-      </View>
+      {/* <View style={styles.navLinks}> */}
+      <TouchableOpacity
+        onPress={() => navigate("/home")}
+        style={styles.navBtn}
+        size={32}
+      >
+        <Icon name="home" size={32} color="#fff" />
+        <Text style={styles.navTxt}></Text>
+      </TouchableOpacity>
+      {/* </View> */}
 
-      <View style={styles.linkContainer}>
-        <TouchableOpacity
-          onPress={() => navigate("/newpost")}
-          style={styles.navBtn}
-        >
-          <Icon name="edit" size={30} color="white" />
-          <Text style={styles.navTxt}>Write a post</Text>
-        </TouchableOpacity>
-      </View>
+      {/* <View style={styles.navLinks}> */}
+      <TouchableOpacity
+        onPress={() => navigate("/addpost")}
+        style={styles.navBtn}
+      >
+        <Icon name="edit" size={32} color="#fff" />
+        <Text style={styles.navTxt}></Text>
+      </TouchableOpacity>
+      {/* </View> */}
 
-      <View style={styles.linkContainer}>
-        <TouchableOpacity
-          onPress={() => navigate("/profile")}
-          style={styles.navBtn}
-        >
-          <Icon name="user" size={30} color="white" />
-          <Text style={styles.navTxt}>Profile</Text>
-        </TouchableOpacity>
-      </View>
+      {/* <View style={styles.navLinks}> */}
+      <TouchableOpacity
+        onPress={() => navigate("/profile")}
+        style={styles.navBtn}
+      >
+        <Icon name="user" size={32} color="#fff" />
+        <Text style={styles.navTxt}></Text>
+      </TouchableOpacity>
+      {/* </View> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   navbar: {
-    backgroundColor: "008080",
+    backgroundColor: "#008080",
     flexDirection: "row",
-    padding: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
     position: "fixed",
     bottom: 0,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     width: "100%",
   },
 
-  navLinks: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   navBtn: {
     alignItems: "center",
     color: "white",
