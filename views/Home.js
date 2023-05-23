@@ -1,11 +1,11 @@
 import { useEffect, useContext } from "react";
 import { StyleSheet, SafeAreaView, View, Text, FlatList } from "react-native";
 
+// Context
+import { UserContext } from "../contexts/UserContext.js";
+
 // Component
 import Post from "../components/Post.js";
-
-// Context
-import { UserContext } from "../App.js";
 
 export default function Home() {
   const context = useContext(UserContext);
@@ -39,16 +39,14 @@ export default function Home() {
 
   return (
     <SafeAreaView style={styles.homeView}>
-      <View style={styles.homeContent}>
-        <Text style={styles.title}>Homepage</Text>
+      <Text style={styles.title}>Homepage</Text>
 
+      <View style={styles.homeContent}>
         <FlatList
-          style={{ padding: 20 }}
+          style={styles.list}
           data={context.userPosts}
           ListHeaderComponent={() => (
-            <Text style={styles.subtitle}>
-              Retrouvez vos posts sur cette page.
-            </Text>
+            <Text style={styles.subtitle}>Find your posts on this page.</Text>
           )}
           renderItem={(data) => (
             <Post
@@ -69,14 +67,17 @@ const styles = StyleSheet.create({
   homeView: {
     flex: 1,
     backgroundColor: "#f8fcda",
-    paddingBottom: 20,
+    padding: 20,
   },
   title: {
     fontSize: 40,
     fontWeight: "bold",
     color: "#f17300",
     textAlign: "center",
-    marginBottom: 30,
+    // marginBottom: 30,
+  },
+  list: {
+    padding: 20,
   },
   subtitle: {
     fontSize: 22,

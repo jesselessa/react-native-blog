@@ -1,25 +1,25 @@
-import { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
-
-// Context
-import { UserContext } from "../App.js";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-native";
 
 export default function Post({ title, body, user, postId }) {
-  const context = useContext(UserContext);
-  const [commentsNb, setCommentsNb] = useState(0);
+  const [commentsNb, setCommentsNb] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPostComments();
   }, []);
 
   const fetchPostComments = async () => {
-    await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
-      .then((response) => response.json())
-      .then((data) => {
-        const comments = data;
-        setCommentsNb(comments.length);
-      })
-      .catch((error) => console.error("Error fetching post comments:", error));
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
+      );
+      const comments = await response.json();
+      setCommentsNb(comments.length);
+    } catch (error) {
+      console.error("Error fetching post comments:", error);
+    }
   };
 
   return (
@@ -28,12 +28,12 @@ export default function Post({ title, body, user, postId }) {
       <Text style={styles.username}>{user.username}</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{body}</Text>
-      <Pressable
+      <TouchableOpacity
         style={styles.button}
         onPress={() => navigate("/comments")}
       >
-        <Text style={styles.btnTxt}>Commentaires({commentsNb})</Text>
-      </Pressable>
+        <Text style={styles.btnTxt}>Commentaires ({commentsNb})</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -44,16 +44,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#fff",
     padding: 20,
-    margin: 10,
-  },
-  postId: {
-    fontSize: 24,
-    fontWeight: "bold",
+    marginBottom: 20,
   },
   name: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#008080",
+    color: "teal",
   },
   username: {
     fontSize: 20,
@@ -65,7 +61,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#054a91",
-    textTransform: "capitalize",
     marginBottom: 10,
   },
   body: {
@@ -74,12 +69,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "#008080",
+    backgroundColor: "teal",
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+    borderRadius: 5,
   },
   btnTxt: {
+    fontSize: 18,
     color: "#fff",
     textAlign: "center",
   },

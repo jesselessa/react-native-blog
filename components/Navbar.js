@@ -9,7 +9,6 @@ export default function Navbar() {
 
   return (
     <View style={styles.navbar}>
-      {/* <View style={styles.navLinks}> */}
       <TouchableOpacity
         onPress={() => navigate("/home")}
         style={styles.navBtn}
@@ -18,9 +17,7 @@ export default function Navbar() {
         <Icon name="home" size={32} color="#fff" />
         <Text style={styles.navTxt}></Text>
       </TouchableOpacity>
-      {/* </View> */}
 
-      {/* <View style={styles.navLinks}> */}
       <TouchableOpacity
         onPress={() => navigate("/addpost")}
         style={styles.navBtn}
@@ -28,9 +25,7 @@ export default function Navbar() {
         <Icon name="edit" size={32} color="#fff" />
         <Text style={styles.navTxt}></Text>
       </TouchableOpacity>
-      {/* </View> */}
 
-      {/* <View style={styles.navLinks}> */}
       <TouchableOpacity
         onPress={() => navigate("/profile")}
         style={styles.navBtn}
@@ -38,21 +33,21 @@ export default function Navbar() {
         <Icon name="user" size={32} color="#fff" />
         <Text style={styles.navTxt}></Text>
       </TouchableOpacity>
-      {/* </View> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   navbar: {
-    backgroundColor: "#008080",
+    height: 50,
+    backgroundColor: "teal",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     position: "fixed",
     bottom: 0,
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     width: "100%",
   },
 

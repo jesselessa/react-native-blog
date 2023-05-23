@@ -1,14 +1,14 @@
-import { useState, createContext } from "react";
+import { useState } from "react";
 import { NativeRouter, Routes, Route } from "react-router-native";
+// Context
+import { UserContext } from "./contexts/UserContext.js";
 
 // Views
 import Login from "./views/Login.js";
 import Home from "./views/Home.js";
 import AddPost from "./views/AddPost.js";
 import Profile from "./views/Profile.js";
-
-// Context
-export const UserContext = createContext();
+import Comments from "./views/Comments.js";
 
 // Component
 import Navbar from "./components/Navbar.js";
@@ -18,6 +18,7 @@ export default function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [userData, setUserData] = useState({});
   const [userPosts, setUserPosts] = useState([]);
+  const [comments, setComments] = useState([]);
 
   const value = {
     userId,
@@ -28,6 +29,8 @@ export default function App() {
     setUserData,
     userPosts,
     setUserPosts,
+    comments,
+    setComments,
   };
 
   return (
@@ -38,6 +41,7 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/addpost" element={<AddPost />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/comments" element={<Comments />} />
         </Routes>
         {isLogged && <Navbar />}
       </NativeRouter>

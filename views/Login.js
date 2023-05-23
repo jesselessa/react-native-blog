@@ -5,12 +5,12 @@ import {
   View,
   Text,
   TextInput,
-  Pressable,
+  TouchableOpacity,
 } from "react-native";
 import { useNavigate } from "react-router-native";
 
 // Context
-import { UserContext } from "../App.js";
+import { UserContext } from "../contexts/UserContext.js";
 
 export default function Login() {
   const context = useContext(UserContext);
@@ -19,7 +19,7 @@ export default function Login() {
   const [errorMsg, setErrorMsg] = useState(false);
 
   const handleLogin = () => {
-    if (parseInt(context.userId) >= 1 && parseInt(context.userId) <= 10) {
+    if (context.userId >= 1 && context.userId <= 10) {
       setErrorMsg(false);
       context.setIsLogged(true);
       navigate("/home");
@@ -30,9 +30,10 @@ export default function Login() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.loginView}>
+      <Text style={styles.title}>React Native Blog</Text>
+
       <View style={styles.content}>
-        <Text style={styles.title}>React Native Blog</Text>
         <TextInput
           placeholder="Enter your ID"
           placeholderTextColor="#333"
@@ -45,32 +46,36 @@ export default function Login() {
           <Text style={styles.errorMsg}>Enter an ID between 1 and 10.</Text>
         )}
 
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.btnTxt}>Log in</Text>
-        </Pressable>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.btnTxt}>Login</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loginView: {
     flex: 1,
     alignItems: "center",
     backgroundColor: "#f8fcda",
-  },
-  content: {
-    width: "90%",
   },
   title: {
     fontSize: 40,
     fontWeight: "bold",
     textAlign: "center",
     paddingTop: 10,
-    marginBottom: 275,
+    // marginBottom: 275,
     color: "#f17300",
   },
+  content: {
+    flex: 1,
+    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   input: {
+    width: "100%",
     height: 40,
     fontSize: 16,
     fontStyle: "italic",
@@ -81,12 +86,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   errorMsg: {
-    color: "#dc143c",
+    color: "crimson",
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
   },
   button: {
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
