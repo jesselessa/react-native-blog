@@ -88,6 +88,7 @@ export default function Profile() {
             onPress={() => {
               navigate("/");
               context.setUserId("");
+              context.setIsLogged(false);
             }}
           >
             <Text style={styles.btnTxt}>Logout</Text>
