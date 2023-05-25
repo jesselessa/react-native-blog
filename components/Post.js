@@ -1,26 +1,28 @@
+import { useEffect, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-native";
 
+// Context
+import { UserContext } from "../contexts/UserContext.js";
+
 export default function Post({ title, body, user, postId }) {
-  const [commentsNb, setCommentsNb] = useState(null);
+  const context = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchPostComments();
   }, []);
 
-  const fetchPostComments = async () => {
-    try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
+  async function fetchPostComments() {
+    await fetch(
+      `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+    )
+      .then((response) => response.json())
+      .then((data) => context.setComments(data))
+      .catch((error) =>
+        console.error("Error fetching comments in Post.js:", error)
       );
-      const comments = await response.json();
-      setCommentsNb(comments.length);
-    } catch (error) {
-      console.error("Error fetching post comments:", error);
-    }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -30,9 +32,9 @@ export default function Post({ title, body, user, postId }) {
       <Text style={styles.body}>{body}</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigate("/comments")}
+        onPress={() => navigate(`/comments/${postId}`)}
       >
-        <Text style={styles.btnTxt}>Commentaires ({commentsNb})</Text>
+        <Text style={styles.btnTxt}>Commentaires ({context.comments.length})</Text>
       </TouchableOpacity>
     </View>
   );
@@ -40,7 +42,6 @@ export default function Post({ title, body, user, postId }) {
 
 const styles = StyleSheet.create({
   container: {
-    borderStyle: "solid",
     borderRadius: 10,
     backgroundColor: "#fff",
     padding: 20,

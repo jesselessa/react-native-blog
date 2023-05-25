@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar.js";
 
 export default function App() {
   const [userId, setUserId] = useState("");
+  const [postId, setPostId] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [userData, setUserData] = useState({});
   const [userPosts, setUserPosts] = useState([]);
@@ -31,6 +32,8 @@ export default function App() {
     setUserPosts,
     comments,
     setComments,
+    postId,
+    setPostId,
   };
 
   return (
@@ -41,7 +44,7 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/addpost" element={<AddPost />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/comments" element={<Comments />} />
+          <Route path="/comments/:postId" element={<Comments />} />
         </Routes>
         {isLogged && <Navbar />}
       </NativeRouter>

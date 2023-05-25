@@ -1,5 +1,5 @@
 import { useEffect, useContext } from "react";
-import { StyleSheet, SafeAreaView, Text, FlatList } from "react-native";
+import { StyleSheet, SafeAreaView, View, Text, FlatList } from "react-native";
 import { useParams } from "react-router-native";
 
 // Components
@@ -9,35 +9,36 @@ import Comment from "../components/Comment";
 import { UserContext } from "../contexts/UserContext.js";
 
 export default function Comments() {
-  const context = useContext(UserContext);
   const { postId } = useParams();
+  const context = useContext(UserContext);
+
   useEffect(() => {
     fetchPostComments();
-  }, []);
+  }, [postId]);
 
-  const fetchPostComments = async () => {
-    await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
-      .then((response) => response.json())
-      .then((data) => context.setComments(data))
-      .catch((error) => console.error("Error fetching post comments:", error));
-  };
+  async function fetchPostComments() {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+      );
+      const data = await response.json();
+      context.setComments(data);
+    } catch (error) {
+      console.error("Error fetching comments in Comments.js:", error);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.commentsView}>
       <Text style={styles.title}>Comments</Text>
-
       <FlatList
+        style={styles.listContainer}
         data={context.comments}
-        renderItem={(data) => (
-          <Comment
-            key={data.item?.id}
-            name={data.item?.name}
-            email={data.item?.email}
-            body={data.item?.body}
-          />
+        renderItem={({ item }) => (
+          <Comment name={item.name} email={item.email} body={item.body} />
         )}
-        keyExtractor={(_data, index) => index.toString()}
-      ></FlatList>
+        keyExtractor={(item) => item.id.toString()}
+      />
     </SafeAreaView>
   );
 }
@@ -55,5 +56,9 @@ const styles = StyleSheet.create({
     color: "#f17300",
     textAlign: "center",
     marginBottom: 30,
+  },
+  listContainer: {
+    width: "100%",
+    padding: 20,
   },
 });

@@ -43,7 +43,7 @@ export default function Home() {
 
       <View style={styles.homeContent}>
         <FlatList
-          style={styles.list}
+          style={styles.listContainer}
           data={context.userPosts}
           ListHeaderComponent={() => (
             <Text style={styles.subtitle}>Find your posts on this page.</Text>
@@ -74,9 +74,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#f17300",
     textAlign: "center",
-    // marginBottom: 30,
   },
-  list: {
+  listContainer: {
     padding: 20,
   },
   subtitle: {
