@@ -36,7 +36,7 @@ export default function Login() {
       <View style={styles.content}>
         <TextInput
           placeholder="Enter your ID"
-          placeholderTextColor="#333"
+          placeholderTextColor={"#333"}
           style={styles.input}
           value={context.userId}
           keyboardType="numeric"
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     paddingTop: 10,
-    // marginBottom: 275,
     color: "#f17300",
   },
   content: {
@@ -76,9 +75,8 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 40,
-    fontSize: 16,
-    fontStyle: "italic",
+    height: 50,
+    fontSize: 18,
     color: "#333",
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -87,7 +85,7 @@ const styles = StyleSheet.create({
   },
   errorMsg: {
     color: "crimson",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
@@ -98,10 +96,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
     backgroundColor: "teal",
-    height: 40,
+    padding: 10,
   },
   btnTxt: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 22,
+    fontWeight: "bold",
   },
 });

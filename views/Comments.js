@@ -1,5 +1,5 @@
 import { useEffect, useContext } from "react";
-import { StyleSheet, SafeAreaView, View, Text, FlatList } from "react-native";
+import { StyleSheet, SafeAreaView, Text, FlatList } from "react-native";
 import { useParams } from "react-router-native";
 
 // Components
@@ -17,15 +17,18 @@ export default function Comments() {
   }, [postId]);
 
   async function fetchPostComments() {
-    try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+    //TODO - Put fonction in context
+    await fetch(
+      `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+    )
+      .then((response) => response.json())
+      .then((data) => context.setComments(data))
+      .catch((error) =>
+        console.error(
+          "Error fetching post comments localized in Comments.js:",
+          error
+        )
       );
-      const data = await response.json();
-      context.setComments(data);
-    } catch (error) {
-      console.error("Error fetching comments in Comments.js:", error);
-    }
   }
 
   return (

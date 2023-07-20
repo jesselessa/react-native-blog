@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontSize: 22,
+    fontWeight: "bold",
   },
   infoContainer: {
     width: "100%",
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "crimson",
-    padding: 5,
+    padding: 10,
     borderRadius: 5,
   },
 });

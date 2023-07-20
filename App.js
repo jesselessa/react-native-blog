@@ -14,6 +14,7 @@ import Comments from "./views/Comments.js";
 import Navbar from "./components/Navbar.js";
 
 export default function App() {
+  //TODO - Reorganize below data by adding them to context instead
   const [userId, setUserId] = useState("");
   const [postId, setPostId] = useState("");
   const [isLogged, setIsLogged] = useState(false);
