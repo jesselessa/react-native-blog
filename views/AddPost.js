@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   SafeAreaView,
   View,
@@ -16,7 +16,8 @@ import { PostsContext } from "../contexts/postsContext.js";
 
 export default function AddPost() {
   const { userId, userData } = useContext(UserContext);
-  const { userPosts, setUserPosts, newPost, setNewPost } = useContext(PostsContext);
+  const { userPosts, setUserPosts, newPost, setNewPost } =
+    useContext(PostsContext);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -29,8 +30,8 @@ export default function AddPost() {
 
     if (title && body) {
       setNewPost({
-        title,
-        body,
+        title: title,
+        body: body,
         user: {
           name: userData.name,
           username: userData.username,
@@ -47,9 +48,7 @@ export default function AddPost() {
           console.log(data);
           setUserPosts([...userPosts, newPost]);
         })
-        .catch((error) =>
-          console.log("Error adding post:", error)
-        );
+        .catch((error) => console.log("Error adding post:", error));
 
       // Reset form fields
       setTitle("");

@@ -99,17 +99,6 @@ export default function Home() {
           keyExtractor={(_data, index) => index.toString()}
         />
       )}
-
-      {/* New post created by user with form */}
-      {newPost && (
-        <Post
-          title={newPost.title}
-          body={newPost.body}
-          user={newPost.user}
-          postId={newPost.id}
-          onDeletePost={() => handleDeletePost(newPost.id)}
-        />
-      )}
     </SafeAreaView>
   );
 }
