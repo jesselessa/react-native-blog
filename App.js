@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { NativeRouter, Routes, Route } from "react-router-native";
-// Context
-import { UserContext } from "./contexts/UserContext.js";
+
+// Contexts
+import { PostsContextProvider } from "./contexts/postsContext.js";
+import { UserContext, UserContextProvider } from "./contexts/userContext.js";
 
 // Views
 import Login from "./views/Login.js";
@@ -14,41 +16,22 @@ import Comments from "./views/Comments.js";
 import Navbar from "./components/Navbar.js";
 
 export default function App() {
-  //TODO - Reorganize below data by adding them to context instead
-  const [userId, setUserId] = useState("");
-  const [postId, setPostId] = useState("");
-  const [isLogged, setIsLogged] = useState(false);
-  const [userData, setUserData] = useState({});
-  const [userPosts, setUserPosts] = useState([]);
-  const [comments, setComments] = useState([]);
-
-  const value = {
-    userId,
-    setUserId,
-    isLogged,
-    setIsLogged,
-    userData,
-    setUserData,
-    userPosts,
-    setUserPosts,
-    comments,
-    setComments,
-    postId,
-    setPostId,
-  };
+  const { isLogged } = useContext(UserContext);
 
   return (
-    <UserContext.Provider value={value}>
-      <NativeRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/addpost" element={<AddPost />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/comments/:postId" element={<Comments />} />
-        </Routes>
-        {isLogged && <Navbar />}
-      </NativeRouter>
-    </UserContext.Provider>
+    <PostsContextProvider>
+      <UserContextProvider>
+        <NativeRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/addpost" element={<AddPost />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/comments/:postId" element={<Comments />} />
+          </Routes>
+          {isLogged && <Navbar />}
+        </NativeRouter>
+      </UserContextProvider>
+    </PostsContextProvider>
   );
 }

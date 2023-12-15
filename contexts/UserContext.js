@@ -1,5 +1,23 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-//TODO - Change context by distinguinshing user/posts/comments
 export const UserContext = createContext();
 
+export const UserContextProvider = ({ children }) => {
+  const [userId, setUserId] = useState("");
+  const [isLogged, setIsLogged] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [userPosts, setUserPosts] = useState([]);
+
+  const value = {
+    userId,
+    setUserId,
+    isLogged,
+    setIsLogged,
+    userData,
+    setUserData,
+    userPosts,
+    setUserPosts,
+  };
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};

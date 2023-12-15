@@ -1,32 +1,38 @@
 import { useEffect, useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigate } from "react-router-native";
 
 // Context
-import { UserContext } from "../contexts/UserContext.js";
+import { PostsContext } from "../contexts/postsContext.js";
 
 export default function Post({ title, body, user, postId, onDeletePost }) {
-  const context = useContext(UserContext);
+  const { comments, isLoading, setIsLoading, fetchPostComments } =
+    useContext(PostsContext);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchPostComments();
-  }, []);
+  // Fetch post comments on component mounting
+  useEffect(async () => {
+    fetchData();
+  }, [postId, fetchPostComments]);
 
-  async function fetchPostComments() {
-    //TODO - Put fonction in context
-    await fetch(
-      `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
-    )
-      .then((response) => response.json())
-      .then((data) => context.setComments(data))
-      .catch((error) =>
-        console.error(
-          "Error fetching post comments localized in Post.js:",
-          error
-        )
-      );
-  }
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      await fetchPostComments(postId);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleDelete = () => {
     Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
@@ -41,18 +47,23 @@ export default function Post({ title, body, user, postId, onDeletePost }) {
       <Text style={styles.username}>{user.username}</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{body}</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigate(`/comments/${postId}`)}
-      >
-        <Text style={styles.btnTxt}>
-          Commentaires ({context.comments.length})
-        </Text>
-      </TouchableOpacity>
+      {isLoading ? (
+        // To indicate content is loading
+        <ActivityIndicator size="large" color="#054a91" />
+      ) : (
+        <>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate(`/comments/${postId}`)}
+          >
+            <Text style={styles.btnTxt}>Commentaires ({comments.length})</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-        <Text style={styles.deleteButtonText}>Delete</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+            <Text style={styles.deleteButtonText}>Delete</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 }

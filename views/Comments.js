@@ -6,11 +6,13 @@ import { useParams } from "react-router-native";
 import Comment from "../components/Comment";
 
 // Context
-import { UserContext } from "../contexts/UserContext.js";
+import { UserContext } from "../contexts/userContext.js";
+import { PostsContext } from "../contexts/postsContext.js";
 
 export default function Comments() {
   const { postId } = useParams();
-  const context = useContext(UserContext);
+  const {} = useContext(UserContext);
+  const { setComments } = useContext(PostsContext);
 
   useEffect(() => {
     fetchPostComments();
@@ -22,7 +24,7 @@ export default function Comments() {
       `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
     )
       .then((response) => response.json())
-      .then((data) => context.setComments(data))
+      .then((data) => setComments(data))
       .catch((error) =>
         console.error(
           "Error fetching post comments localized in Comments.js:",

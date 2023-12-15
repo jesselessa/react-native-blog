@@ -7,47 +7,48 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+
 import { useNavigate } from "react-router-native";
 
 // Context
-import { UserContext } from "../contexts/UserContext.js";
+import { UserContext } from "../contexts/userContext.js";
+import { PostsContext } from "../contexts/postsContext.js";
 
 export default function AddPost() {
-  const context = useContext(UserContext);
-  const navigate = useNavigate();
+  const { userId, userData } = useContext(UserContext);
+  const { userPosts, setUserPosts, newPost, setNewPost } = useContext(PostsContext);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
+  const navigate = useNavigate();
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
     if (title && body) {
-      const newPost = {
+      setNewPost({
         title,
         body,
         user: {
-          name: context.userData.name,
-          username: context.userData.username,
+          name: userData.name,
+          username: userData.username,
         },
-        postId: context.userPosts.length + 1,
-      };
+        postId: userPosts.length + 1,
+      });
 
-      fetch(
-        `https://jsonplaceholder.typicode.com/posts?userId=${context.userId}`,
-        {
-          method: "POST",
-          body: JSON.stringify(post),
-        }
-      )
+      fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`, {
+        method: "POST",
+        body: JSON.stringify(newPost),
+      })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          context.setUserPosts([...context.userPosts, newPost]);
+          setUserPosts([...userPosts, newPost]);
         })
         .catch((error) =>
-          console.log("Error adding a post localized in AddPost.js:", error)
+          console.log("Error adding post:", error)
         );
 
       // Reset form fields

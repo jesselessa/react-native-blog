@@ -1,44 +1,55 @@
 import { useEffect, useContext } from "react";
-import { StyleSheet, SafeAreaView, Text, FlatList, Alert } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  FlatList,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 
 // Context
-import { UserContext } from "../contexts/UserContext.js";
+import { UserContext } from "../contexts/userContext.js";
+import { PostsContext } from "../contexts/postsContext.js";
 
 // Component
 import Post from "../components/Post.js";
 
 export default function Home() {
-  const context = useContext(UserContext);
+  const { userId, userData, setUserData, userPosts, setUserPosts } =
+    useContext(UserContext);
+  const { newPost, isLoading, setIsLoading } = useContext(PostsContext);
 
+  // Fetch user's posts and info on component mounting
   useEffect(() => {
     fetchUserPostsAndInfo();
-  }, []);
+  }, [userId, userPosts, userData, newPost]);
 
   const fetchUserPostsAndInfo = async () => {
     try {
+      setIsLoading(true);
+
       // Get all user's posts
       const postsPromise = fetch(
-        `https://jsonplaceholder.typicode.com/users/${context.userId}/posts`
+        `https://jsonplaceholder.typicode.com/users/${userId}/posts`
       ).then((response) => response.json());
 
-      // Get user's info
+      // Get all user's data
       const userDataPromise = fetch(
-        `https://jsonplaceholder.typicode.com/users/${context.userId}`
-      )
-        .then((response) => response.json())
-        .catch((error) =>
-          console.log("Error fetching user data localized in Home.js:", error)
-        );
+        `https://jsonplaceholder.typicode.com/users/${userId}`
+      ).then((response) => response.json());
 
       const [postsData, userData] = await Promise.all([
         postsPromise,
         userDataPromise,
       ]);
 
-      context.setUserPosts(postsData);
-      context.setUserData(userData);
+      setUserPosts(postsData);
+      setUserData(userData);
     } catch (error) {
-      console.error("Error fetching user's data localized in Home.js:", error);
+      console.error("Error fetching user's posts and info:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -49,10 +60,8 @@ export default function Home() {
         text: "Delete",
         onPress: () => {
           // Delete the post
-          const updatedPosts = context.userPosts.filter(
-            (post) => post.id !== postId
-          );
-          context.setUserPosts(updatedPosts);
+          const updatedPosts = userPosts.filter((post) => post.id !== postId);
+          setUserPosts(updatedPosts);
         },
         style: "destructive",
       },
@@ -62,43 +71,43 @@ export default function Home() {
   return (
     <SafeAreaView style={styles.homeView}>
       <Text style={styles.title}>Homepage</Text>
-
-      <FlatList
-        style={styles.listContainer}
-        data={context.userPosts}
-        ListHeaderComponent={() => (
-          <Text style={styles.subtitle}>Find your posts on this page.</Text>
-        )}
-        renderItem={({ item }) => (
-          <Post
-            title={item.title}
-            body={item.body}
-            user={context.userData}
-            postId={item.id}
-            onDeletePost={() => handleDeletePost(item.id)}
-          />
-        )}
-        // Alternative below :
-        // renderItem={(data) => (
-        //   <Post
-        //     title={data.item.title}
-        //     body={data.item.body}
-        //     user={context.userData}
-        //     postId={data.item.id}
-        //     onDeletePost={() => handleDeletePost(data.item.id)}
-        //   />
-        // )}
-        keyExtractor={(_data, index) => index.toString()}
-      />
+      {userPosts.length === 0 ? (
+        // Message when there are no posts
+        <Text style={styles.noPostMessage}>You have no posts yet.</Text>
+      ) : isLoading ? (
+        // To indicate content is loading
+        <ActivityIndicator size="large" color="#054a91" />
+      ) : (
+        // Render the list of posts
+        <FlatList
+          style={styles.listContainer}
+          data={userPosts}
+          ListHeaderComponent={() => (
+            <Text style={styles.subtitle}>Find your posts on this page.</Text>
+          )}
+          renderItem={(
+            { item } // 'item' = property of 'data' object
+          ) => (
+            <Post
+              title={item.title}
+              body={item.body}
+              user={userData}
+              postId={item.id}
+              onDeletePost={() => handleDeletePost(item.id)}
+            />
+          )}
+          keyExtractor={(_data, index) => index.toString()}
+        />
+      )}
 
       {/* New post created by user with form */}
-      {context.newPost && (
+      {newPost && (
         <Post
-          title={context.newPost.title}
-          body={context.newPost.body}
-          user={context.newPost.user}
-          postId={context.newPost.id}
-          onDeletePost={() => handleDeletePost(context.newPost.id)}
+          title={newPost.title}
+          body={newPost.body}
+          user={newPost.user}
+          postId={newPost.id}
+          onDeletePost={() => handleDeletePost(newPost.id)}
         />
       )}
     </SafeAreaView>
@@ -117,6 +126,12 @@ const styles = StyleSheet.create({
     color: "#f17300",
     textAlign: "center",
     marginBottom: 30,
+  },
+  noPostMessage: {
+    fontSize: 22,
+    color: "#333",
+    textAlign: "center",
+    marginTop: 20,
   },
   listContainer: {
     padding: 20,

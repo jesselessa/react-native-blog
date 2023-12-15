@@ -11,10 +11,11 @@ import {
 import * as ImagePicker from "expo-image-picker";
 
 // Context
-import { UserContext } from "../contexts/UserContext.js";
+import { UserContext } from "../contexts/userContext.js";
 
 export default function Profile() {
-  const context = useContext(UserContext);
+  const { setUserId, userData, userPosts } = useContext(UserContext);
+
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
   const [btnText, setBtnText] = useState("Add a picture");
@@ -40,7 +41,7 @@ export default function Profile() {
       <Text style={styles.title}>Profile</Text>
 
       <View style={styles.profileContent}>
-        <View styles={styles.imgBtnContainer}>
+        <View style={styles.imgBtnContainer}>
           <View style={styles.imgBox}>
             <Image
               style={styles.img}
@@ -59,36 +60,32 @@ export default function Profile() {
 
         <View style={styles.infoContainer}>
           <Text style={styles.info}>
-            <Text style={styles.infoTitle}>Name :</Text> {context.userData.name}
+            <Text style={styles.infoTitle}>Name :</Text> {userData.name}
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Posts number :</Text>{" "}
-            {context.userPosts.length ? context.userPosts.length : "Aucun"}
+            {userPosts.length ? userPosts.length : "Aucun"}
           </Text>
           <Text style={styles.info}>
-            <Text style={styles.infoTitle}>Username :</Text>{" "}
-            {context.userData.username}
+            <Text style={styles.infoTitle}>Username :</Text> {userData.username}
           </Text>
           <Text style={styles.info}>
-            <Text style={styles.infoTitle}>Email :</Text>{" "}
-            {context.userData.email}
+            <Text style={styles.infoTitle}>Email :</Text> {userData.email}
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Phone :</Text>{" "}
-            {context.userData.phone ? context.userData.phone : "Non renseigné"}
+            {userData.phone ? userData.phone : "Non renseigné"}
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Website :</Text>{" "}
-            {context.userData.website
-              ? context.userData.website
-              : "Non renseigné"}
+            {userData.website ? userData.website : "Non renseigné"}
           </Text>
           <TouchableOpacity
             style={styles.logoutBtn}
             onPress={() => {
               navigate("/");
-              context.setUserId("");
-              context.setIsLogged(false);
+              setUserId("");
+              setIsLogged(false);
             }}
           >
             <Text style={styles.btnTxt}>Logout</Text>
