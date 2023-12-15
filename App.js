@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { NativeRouter, Routes, Route } from "react-router-native";
 
-// Contexts
+// Contexts providers
 import { PostsContextProvider } from "./contexts/postsContext.js";
-import { UserContext, UserContextProvider } from "./contexts/userContext.js";
+import { UserContextProvider, UserContext } from "./contexts/userContext.js";
 
 // Views
 import Login from "./views/Login.js";
@@ -19,8 +19,8 @@ export default function App() {
   const { isLogged } = useContext(UserContext);
 
   return (
-    <PostsContextProvider>
-      <UserContextProvider>
+    <UserContextProvider>
+      <PostsContextProvider>
         <NativeRouter>
           <Routes>
             <Route path="/" element={<Login />} />
@@ -31,7 +31,7 @@ export default function App() {
           </Routes>
           {isLogged && <Navbar />}
         </NativeRouter>
-      </UserContextProvider>
-    </PostsContextProvider>
+      </PostsContextProvider>
+    </UserContextProvider>
   );
 }

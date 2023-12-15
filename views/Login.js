@@ -21,12 +21,12 @@ export default function Login() {
 
   const handleLogin = () => {
     if (userId >= 1 && userId <= 10) {
-      setErrorMsg(false);
       setIsLogged(true);
+      setErrorMsg(false);
       navigate("/home");
     } else {
-      setErrorMsg(true);
       setIsLogged(false);
+      setErrorMsg(true);
     }
   };
 
