@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
 
 // Icons
@@ -19,30 +19,30 @@ export default function Navbar() {
 
   return (
     <View style={styles.navbar}>
-      <TouchableOpacity
+      <Pressable
         onPress={() => navigate("/home")}
         style={styles.navBtn}
         size={32}
       >
         <Icon name="home" size={32} color="#fff" />
         <Text style={styles.navTxt}></Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
         onPress={() => navigate("/addpost")}
         style={styles.navBtn}
       >
         <Icon name="edit" size={32} color="#fff" />
         <Text style={styles.navTxt}></Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      <TouchableOpacity
+      <Pressable
         onPress={() => navigate("/profile")}
         style={styles.navBtn}
       >
         <Icon name="user" size={32} color="#fff" />
         <Text style={styles.navTxt}></Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

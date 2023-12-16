@@ -16,14 +16,14 @@ import { PostsContext } from "../contexts/postsContext.js";
 import Post from "../components/Post.js";
 
 export default function Home() {
-  const { userId, userData, setUserData, userPosts, setUserPosts } =
+  const { inputUserId, userData, setUserData, userPosts, setUserPosts } =
     useContext(UserContext);
   const { newPost, isLoading, setIsLoading } = useContext(PostsContext);
 
   // Fetch user's posts and info on component mounting
   useEffect(() => {
     fetchUserPostsAndInfo();
-  }, [userId, userPosts, userData, newPost]);
+  }, [inputUserId, userPosts, userData, newPost]);
 
   const fetchUserPostsAndInfo = async () => {
     try {
@@ -31,12 +31,14 @@ export default function Home() {
 
       // Get all user's posts
       const postsPromise = fetch(
-        `https://jsonplaceholder.typicode.com/users/${userId}/posts`
+        `https://jsonplaceholder.typicode.com/users/${inputUserId}/posts`
       ).then((response) => response.json());
+      //   `https://jsonplaceholder.typicode.com/posts?userId=${inputUserId}`
+      // ).then((response) => response.json());
 
       // Get all user's data
       const userDataPromise = fetch(
-        `https://jsonplaceholder.typicode.com/users/${userId}`
+        `https://jsonplaceholder.typicode.com/users/${inputUserId}`
       ).then((response) => response.json());
 
       const [postsData, userData] = await Promise.all([

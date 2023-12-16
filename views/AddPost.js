@@ -4,7 +4,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
 } from "react-native";
 
@@ -15,7 +15,7 @@ import { UserContext } from "../contexts/userContext.js";
 import { PostsContext } from "../contexts/postsContext.js";
 
 export default function AddPost() {
-  const { userId, userData } = useContext(UserContext);
+  const { inputUserId, userData } = useContext(UserContext);
   const { userPosts, setUserPosts, newPost, setNewPost } =
     useContext(PostsContext);
 
@@ -39,10 +39,13 @@ export default function AddPost() {
         postId: userPosts.length + 1,
       });
 
-      fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`, {
-        method: "POST",
-        body: JSON.stringify(newPost),
-      })
+      fetch(
+        `https://jsonplaceholder.typicode.com/posts?userId=${inputUserId}`,
+        {
+          method: "POST",
+          body: JSON.stringify(newPost),
+        }
+      )
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -78,9 +81,9 @@ export default function AddPost() {
 
         {errorMsg && <Text style={styles.errorMsg}>{errorMsg}</Text>}
 
-        <TouchableOpacity style={styles.button} onPress={handleFormSubmit}>
+        <Pressable style={styles.button} onPress={handleFormSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </SafeAreaView>
   );

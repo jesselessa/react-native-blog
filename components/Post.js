@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   Alert,
   ActivityIndicator,
 } from "react-native";
@@ -52,16 +52,16 @@ export default function Post({ title, body, user, postId, onDeletePost }) {
         <ActivityIndicator size="large" color="#054a91" />
       ) : (
         <>
-          <TouchableOpacity
+          <Pressable
             style={styles.button}
             onPress={() => navigate(`/comments/${postId}`)}
           >
             <Text style={styles.btnTxt}>Commentaires ({comments.length})</Text>
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+          <Pressable style={styles.deleteButton} onPress={handleDelete}>
             <Text style={styles.deleteButtonText}>Delete</Text>
-          </TouchableOpacity>
+          </Pressable>
         </>
       )}
     </View>

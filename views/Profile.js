@@ -14,7 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import { UserContext } from "../contexts/userContext.js";
 
 export default function Profile() {
-  const { setUserId, userData, userPosts } = useContext(UserContext);
+  const { setInputUserId, userData, userPosts } = useContext(UserContext);
 
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
@@ -84,7 +84,7 @@ export default function Profile() {
             style={styles.logoutBtn}
             onPress={() => {
               navigate("/");
-              setUserId("");
+              setInputUserId("");
               setIsLogged(false);
             }}
           >

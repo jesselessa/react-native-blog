@@ -6,12 +6,10 @@ import { useParams } from "react-router-native";
 import Comment from "../components/Comment";
 
 // Context
-import { UserContext } from "../contexts/userContext.js";
 import { PostsContext } from "../contexts/postsContext.js";
 
 export default function Comments() {
   const { postId } = useParams();
-  const {} = useContext(UserContext);
   const { setComments } = useContext(PostsContext);
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { useNavigate } from "react-router-native";
 
@@ -13,14 +13,14 @@ import { useNavigate } from "react-router-native";
 import { UserContext } from "../contexts/userContext.js";
 
 export default function Login() {
-  const { userId, setUserId, setIsLogged } = useContext(UserContext);
+  const { inputUserId, setInputUserId, setIsLogged } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const [errorMsg, setErrorMsg] = useState(false);
 
   const handleLogin = () => {
-    if (userId >= 1 && userId <= 10) {
+    if (inputUserId >= 1 && setInputUserId <= 10) {
       setIsLogged(true);
       setErrorMsg(false);
       navigate("/home");
@@ -40,16 +40,16 @@ export default function Login() {
           placeholderTextColor={"#333"}
           style={styles.input}
           value={userId}
-          keyboardType="numeric"
+          inputMode="numeric"
           onChangeText={setUserId}
         />
         {errorMsg && (
           <Text style={styles.errorMsg}>Enter an ID between 1 and 10.</Text>
         )}
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Pressable style={styles.button} onPress={handleLogin}>
           <Text style={styles.btnTxt}>Login</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
