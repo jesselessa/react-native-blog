@@ -4,8 +4,18 @@ import { useNavigate } from "react-router-native";
 // Icons
 import Icon from "react-native-vector-icons/FontAwesome";
 
+// Context
+import { UserContext } from "../contexts/userContext.js";
+import { useContext } from "react";
+
 export default function Navbar() {
-  const navigate = useNavigate();
+  const { isLogged } = useContext;
+
+  const navigate = useNavigate(UserContext);
+
+  if (!isLogged) {
+    return null; // Not to display navbar if user not connected
+  }
 
   return (
     <View style={styles.navbar}>

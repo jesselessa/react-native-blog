@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { NativeRouter, Routes, Route } from "react-router-native";
 
 // Contexts providers
 import { PostsContextProvider } from "./contexts/postsContext.js";
-import { UserContextProvider, UserContext } from "./contexts/userContext.js";
+import { UserContextProvider } from "./contexts/userContext.js";
 
 // Views
 import Login from "./views/Login.js";
@@ -16,8 +15,6 @@ import Comments from "./views/Comments.js";
 import Navbar from "./components/Navbar.js";
 
 export default function App() {
-  const { isLogged } = useContext(UserContext);
-
   return (
     <UserContextProvider>
       <PostsContextProvider>
@@ -29,7 +26,7 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/comments/:postId" element={<Comments />} />
           </Routes>
-          {isLogged && <Navbar />}
+          <Navbar />
         </NativeRouter>
       </PostsContextProvider>
     </UserContextProvider>
