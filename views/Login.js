@@ -39,9 +39,9 @@ export default function Login() {
           placeholder="Enter your ID"
           placeholderTextColor={"#333"}
           style={styles.input}
-          value={userId}
+          value={inputUserId}
           inputMode="numeric"
-          onChangeText={setUserId}
+          onChangeText={setInputUserId}
         />
         {errorMsg && (
           <Text style={styles.errorMsg}>Enter an ID between 1 and 10.</Text>
