@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-// Context
+// Contexts
 import { UserContext } from "../contexts/userContext.js";
 import { PostsContext } from "../contexts/postsContext.js";
 
@@ -18,42 +18,36 @@ import Post from "../components/Post.js";
 export default function Home() {
   const { inputUserId, userData, setUserData, userPosts, setUserPosts } =
     useContext(UserContext);
-  const { newPost, isLoading, setIsLoading } = useContext(PostsContext);
+  const { isLoading, setIsLoading } = useContext(PostsContext);
 
   // Fetch user's posts and info on component mounting
   useEffect(() => {
-    fetchUserPostsAndInfo();
-  }, [inputUserId, userPosts, userData, newPost]);
+    const fetchUserPostsAndInfo = async (inputUserId) => {
+      try {
+        setIsLoading(true); // Start of loading
 
-  const fetchUserPostsAndInfo = async () => {
-    try {
-      setIsLoading(true);
+        // Get user's data
+        const userInfoResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${inputUserId}`
+        );
+        const userInfo = await userInfoResponse.json();
+        setUserData(userInfo);
 
-      // Get all user's posts
-      const postsPromise = fetch(
-        `https://jsonplaceholder.typicode.com/users/${inputUserId}/posts`
-      ).then((response) => response.json());
-      //   `https://jsonplaceholder.typicode.com/posts?userId=${inputUserId}`
-      // ).then((response) => response.json());
+        // Get user's posts
+        const postsResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${inputUserId}/posts`
+        );
+        const postsData = await postsResponse.json();
+        setUserPosts(postsData);
+      } catch (error) {
+        console.error("Error fetching user's posts and info:", error);
+      } finally {
+        setIsLoading(false); // End of loading
+      }
+    };
 
-      // Get all user's data
-      const userDataPromise = fetch(
-        `https://jsonplaceholder.typicode.com/users/${inputUserId}`
-      ).then((response) => response.json());
-
-      const [postsData, userData] = await Promise.all([
-        postsPromise,
-        userDataPromise,
-      ]);
-
-      setUserPosts(postsData);
-      setUserData(userData);
-    } catch (error) {
-      console.error("Error fetching user's posts and info:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    fetchUserPostsAndInfo(inputUserId);
+  }, [inputUserId, setUserData, setUserPosts, setIsLoading]);
 
   const handleDeletePost = (postId) => {
     Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
@@ -73,12 +67,12 @@ export default function Home() {
   return (
     <SafeAreaView style={styles.homeView}>
       <Text style={styles.title}>Homepage</Text>
-      {userPosts.length === 0 ? (
-        // Message when there are no posts
-        <Text style={styles.noPostMessage}>You have no posts yet.</Text>
-      ) : isLoading ? (
+      {isLoading ? (
         // To indicate content is loading
         <ActivityIndicator size="large" color="#054a91" />
+      ) : userPosts.length === 0 ? (
+        // No message
+        <Text style={styles.noPostMessage}>You have no posts yet.</Text>
       ) : (
         // Render the list of posts
         <FlatList
@@ -132,7 +126,7 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 20,
   },
-  homeContent: {
-    marginTop: 20,
-  },
+  // homeContent: {
+  //   marginTop: 20,
+  // },
 });

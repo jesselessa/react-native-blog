@@ -20,7 +20,7 @@ export default function Login() {
   const [errorMsg, setErrorMsg] = useState(false);
 
   const handleLogin = () => {
-    if (inputUserId >= 1 && setInputUserId <= 10) {
+    if (inputUserId >= 1 && inputUserId <= 10) {
       setIsLogged(true);
       setErrorMsg(false);
       navigate("/home");

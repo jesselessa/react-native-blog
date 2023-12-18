@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { useContext } from "react";
+import { StyleSheet, View } from "react-native";
 import { useNavigate } from "react-router-native";
 
 // Icons
@@ -6,44 +7,39 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 // Context
 import { UserContext } from "../contexts/userContext.js";
-import { useContext } from "react";
 
 export default function Navbar() {
-  const { isLogged } = useContext;
+  const { isLogged } = useContext(UserContext);
 
-  const navigate = useNavigate(UserContext);
-
-  if (!isLogged) {
-    return null; // Not to display navbar if user not connected
-  }
+  const navigate = useNavigate();
 
   return (
-    <View style={styles.navbar}>
-      <Pressable
-        onPress={() => navigate("/home")}
-        style={styles.navBtn}
-        size={32}
-      >
-        <Icon name="home" size={32} color="#fff" />
-        <Text style={styles.navTxt}></Text>
-      </Pressable>
+    <>
+      {isLogged && (
+        <View style={styles.navbar}>
+          <Icon
+            name="home"
+            size={32}
+            color="#fff"
+            onPress={() => navigate("/home")}
+          />
 
-      <Pressable
-        onPress={() => navigate("/addpost")}
-        style={styles.navBtn}
-      >
-        <Icon name="edit" size={32} color="#fff" />
-        <Text style={styles.navTxt}></Text>
-      </Pressable>
+          <Icon
+            name="edit"
+            size={30}
+            color="#fff"
+            onPress={() => navigate("/addpost")}
+          />
 
-      <Pressable
-        onPress={() => navigate("/profile")}
-        style={styles.navBtn}
-      >
-        <Icon name="user" size={32} color="#fff" />
-        <Text style={styles.navTxt}></Text>
-      </Pressable>
-    </View>
+          <Icon
+            name="user"
+            size={30}
+            color="#fff"
+            onPress={() => navigate("/profile")}
+          />
+        </View>
+      )}
+    </>
   );
 }
 

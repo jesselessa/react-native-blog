@@ -66,7 +66,7 @@ export default function AddPost() {
 
   return (
     <SafeAreaView style={styles.addPostView}>
-      <Text style={styles.title}>Create New Post</Text>
+      <Text style={styles.title}>Add Post</Text>
 
       <View style={styles.form}>
         <Text style={styles.label}>Title</Text>

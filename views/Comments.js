@@ -10,33 +10,32 @@ import { PostsContext } from "../contexts/postsContext.js";
 
 export default function Comments() {
   const { postId } = useParams();
-  const { setComments } = useContext(PostsContext);
+  const { comments, fetchPostComments } = useContext(PostsContext);
 
   useEffect(() => {
-    fetchPostComments();
+    fetchPostComments;
   }, [postId]);
 
-  async function fetchPostComments() {
-    //TODO - Put fonction in context
-    await fetch(
-      `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
-    )
-      .then((response) => response.json())
-      .then((data) => setComments(data))
-      .catch((error) =>
-        console.error(
-          "Error fetching post comments localized in Comments.js:",
-          error
-        )
-      );
-  }
+  // async function fetchPostComments(postId) {
+  //   await fetch(
+  //     `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => setComments(data))
+  //     .catch((error) =>
+  //       console.error(
+  //         "Error fetching post comments localized in Comments.js:",
+  //         error
+  //       )
+  //     );
+  // }
 
   return (
     <SafeAreaView style={styles.commentsView}>
       <Text style={styles.title}>Comments</Text>
       <FlatList
         style={styles.listContainer}
-        data={context.comments}
+        data={comments}
         renderItem={({ item }) => (
           <Comment name={item.name} email={item.email} body={item.body} />
         )}

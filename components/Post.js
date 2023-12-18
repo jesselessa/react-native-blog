@@ -19,20 +19,19 @@ export default function Post({ title, body, user, postId, onDeletePost }) {
   const navigate = useNavigate();
 
   // Fetch post comments on component mounting
-  useEffect(async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        await fetchPostComments(postId);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchData();
   }, [postId, fetchPostComments]);
-
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      await fetchPostComments(postId);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleDelete = () => {
     Alert.alert("Delete Post", "Are you sure you want to delete this post?", [

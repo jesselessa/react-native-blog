@@ -6,7 +6,7 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
@@ -14,7 +14,8 @@ import * as ImagePicker from "expo-image-picker";
 import { UserContext } from "../contexts/userContext.js";
 
 export default function Profile() {
-  const { setInputUserId, userData, userPosts } = useContext(UserContext);
+  const { setInputUserId, setIsLogged, userData, userPosts } =
+    useContext(UserContext);
 
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
@@ -53,9 +54,9 @@ export default function Profile() {
             ></Image>
           </View>
 
-          <TouchableOpacity style={styles.btn} onPress={pickImageAsync}>
+          <Pressable style={styles.btn} onPress={pickImageAsync}>
             <Text style={styles.btnTxt}>{btnText}</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.infoContainer}>
@@ -80,7 +81,7 @@ export default function Profile() {
             <Text style={styles.infoTitle}>Website :</Text>{" "}
             {userData.website ? userData.website : "Non renseigné"}
           </Text>
-          <TouchableOpacity
+          <Pressable
             style={styles.logoutBtn}
             onPress={() => {
               navigate("/");
@@ -89,7 +90,7 @@ export default function Profile() {
             }}
           >
             <Text style={styles.btnTxt}>Logout</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>

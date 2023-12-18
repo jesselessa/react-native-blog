@@ -1,6 +1,6 @@
 import { NativeRouter, Routes, Route } from "react-router-native";
 
-// Contexts providers
+// Contexts
 import { PostsContextProvider } from "./contexts/postsContext.js";
 import { UserContextProvider } from "./contexts/userContext.js";
 
