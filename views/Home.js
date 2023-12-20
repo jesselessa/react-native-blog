@@ -21,7 +21,7 @@ export default function Home() {
 
   // Fetch user's info and posts on component mounting
   useEffect(() => {
-    const fetchUserInfoAndPosts = async () => {
+    const fetchUserInfoAndPosts = async (userId) => {
       try {
         setIsLoading(true); // Start of loading
 
@@ -34,12 +34,12 @@ export default function Home() {
         setUserData(userInfo);
 
         // Get user's posts
-        const postsResponse = await fetch(
+        const userPostsResponse = await fetch(
           `https://jsonplaceholder.typicode.com/users/${userId}/posts`
         );
 
-        const postsData = await postsResponse.json();
-        setUserPosts(postsData);
+        const userPostsData = await userPostsResponse.json();
+        setUserPosts(userPostsData);
       } catch (error) {
         console.error("Error fetching user's posts and info:", error);
       } finally {
@@ -47,14 +47,14 @@ export default function Home() {
       }
     };
 
-    fetchUserInfoAndPosts();
+    fetchUserInfoAndPosts(userId);
   }, [userId, setUserData, setUserPosts, setIsLoading]);
 
   return (
     <SafeAreaView style={styles.homeView}>
       <Text style={styles.title}>Homepage</Text>
       {isLoading ? (
-        // To indicate content is loading
+        // ActivityIndicator indicates content is loading
         <ActivityIndicator size="large" color="#054a91" />
       ) : userPosts.length === 0 ? (
         <Text style={styles.noPostMessage}>You have no post yet.</Text>
@@ -73,7 +73,7 @@ export default function Home() {
               user={userData}
               // onDelete={handleDeletePost}
               onPress={() => console.log("Button pressed !")}
-              // keyExtractor={(item) => item?.id.tostring()} // No need if, item already has a 'key' or 'id' prop
+              // keyExtractor={(item) => item?.id.toString()} // No need if, item already has a 'key' or 'id' prop
             />
           )}
           ListHeaderComponent={() => (
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#054a91",
     textAlign: "center",
-    marginBottom: 30,
+    marginBottom: 25,
   },
   noPostMessage: {
     fontSize: 22,

@@ -7,9 +7,11 @@ import Comment from "../components/Comment";
 
 // Context
 import { PostsContext } from "../contexts/postsContext.js";
+import { ActivityIndicator } from "react-native-web";
 
 export default function Comments() {
-  const { postComs, setPostComs } = useContext(PostsContext);
+  const { postComs, setPostComs, isLoading, setIsLoading } =
+    useContext(PostsContext);
 
   const { postId } = useParams();
 
@@ -17,6 +19,8 @@ export default function Comments() {
   useEffect(() => {
     const fetchPostComments = async (postId) => {
       try {
+        setIsLoading(true);
+
         const response = await fetch(
           `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
         );
@@ -25,6 +29,8 @@ export default function Comments() {
         setPostComs(data);
       } catch (error) {
         console.error("Failed fetching post comments:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -34,18 +40,24 @@ export default function Comments() {
   return (
     <SafeAreaView style={styles.commentsView}>
       <Text style={styles.title}>Comments</Text>
-      <FlatList
-        style={styles.listContainer}
-        data={postComs}
-        renderItem={({ item }) => (
-          <Comment
-            postId={postId}
-            name={item?.name}
-            email={item?.email}
-            body={item?.body}
-          />
-        )}
-      />
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#054a91" />
+      ) : postComs === 0 ? (
+        <Text style={styles.noPostMessage}>No comment.</Text>
+      ) : (
+        <FlatList
+          style={styles.listContainer}
+          data={postComs}
+          renderItem={({ item }) => (
+            <Comment
+              postId={postId}
+              name={item?.name}
+              email={item?.email}
+              body={item?.body}
+            />
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -64,7 +76,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#054a91",
     textAlign: "center",
-    marginBottom: 30,
+    marginBottom: 25,
+  },
+  noPostMessage: {
+    fontSize: 22,
+    color: "#333",
+    textAlign: "center",
+    marginTop: 20,
   },
   listContainer: {
     width: "100%",

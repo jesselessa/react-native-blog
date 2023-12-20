@@ -48,7 +48,7 @@ export default function Login() {
           autoComplete="off"
         />
         {errorMsg && (
-          <Text style={styles.errorMsg}>Enter an ID between 1 and 10.</Text>
+          <Text style={styles.errorMsg}>Enter an ID between 1 and 10</Text>
         )}
 
         <Pressable style={styles.button} onPress={handleLogin}>

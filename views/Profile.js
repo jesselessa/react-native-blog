@@ -61,11 +61,11 @@ export default function Profile() {
             <Text style={styles.infoTitle}>Name :</Text> {userData.name}
           </Text>
           <Text style={styles.info}>
-            <Text style={styles.infoTitle}>Posts number :</Text>{" "}
-            {userPosts.length ? userPosts.length : "Aucun"}
+            <Text style={styles.infoTitle}>Username :</Text> {userData.username}
           </Text>
           <Text style={styles.info}>
-            <Text style={styles.infoTitle}>Username :</Text> {userData.username}
+            <Text style={styles.infoTitle}>Posts number :</Text>{" "}
+            {userPosts.length ? userPosts.length : "Aucun"}
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Email :</Text> {userData.email}
@@ -101,27 +101,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#f3f6fb",
     paddingTop: 20,
     paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingBottom: 70,
   },
   title: {
     fontSize: 40,
     fontWeight: "bold",
     color: "#054a91",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 25,
   },
   profileContent: {
     height: "90%",
     width: "90%",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
+    overflowY: "auto",
   },
   imgBtnContainer: {
-    height: "40%",
+    minHeight: "40%",
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
-    marginBottom: 20,
   },
   imgBox: {
     width: 160,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     width: "100%",
-    height: "50%",
+    minHeight: "50%",
     justifyContent: "space-between",
     backgroundColor: "#fff",
     padding: 20,

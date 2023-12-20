@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -7,85 +7,115 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
-
 import { useNavigate } from "react-router-native";
 
-// Context
+// Contexts
 import { UserContext } from "../contexts/userContext.js";
 import { PostsContext } from "../contexts/postsContext.js";
 
 export default function AddPost() {
-  const { userId, userData } = useContext(UserContext);
-  const { userPosts, setUserPosts, newPost, setNewPost } =
+  const { userData } = useContext(UserContext);
+  const { posts, setPosts, setComments, newPost, setNewPost, setIsLoading } =
     useContext(PostsContext);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  // const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+  // Fetch all users's posts and comments on component mounting
+  useEffect(() => {
+    const fetchAllPostsAndComs = async () => {
+      try {
+        setIsLoading(true); // Start of loading
 
+        // Get all posts
+        const postsResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/posts`
+        );
+        const postsData = await postsResponse.json();
+        setPosts(postsData);
+
+        // Get all comments
+        const commentsResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/comments`
+        );
+        const commentsData = await commentsResponse.json();
+        setComments(commentsData);
+      } catch (error) {
+        console.error("Error fetching all posts and comments:", error);
+      } finally {
+        setIsLoading(false); // End of loading (success or not)
+      }
+    };
+
+    fetchAllPostsAndComs();
+  }, [setPosts, setComments]);
+
+  const handleFormSubmit = async () => {
     if (title && body) {
       setNewPost({
-        id: userPosts.length + 1,
+        userId: userData.id,
+        id: posts.length + 1,
         title: title,
         body: body,
-        user: {
-          name: userData.name,
-          username: userData.username,
-        },
       });
 
       try {
-        const userPostsResponse = await fetch(
-          `https://jsonplaceholder.typicode.com/posts?userId=${userId}`,
+        const postsResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/posts`,
           {
             method: "POST",
             body: JSON.stringify(newPost),
           }
         );
 
-        const userPostsData = await userPostsResponse.json();
+        const postsData = await postsResponse.json();
 
-        // Update user's posts
-        setUserPosts([...userPostsData, newPost]);
+        // Update all posts
+        setPosts([...postsData, newPost]);
+
         // Reset form fields
         setTitle("");
         setBody("");
-        // Go to homepage
+
         navigate("/home");
       } catch (error) {
         console.error("Error adding post:", error);
       }
     } else {
-      setErrorMsg("Enter a title and a text.");
+      setErrorMsg(true);
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 2000);
     }
   };
 
   return (
     <SafeAreaView style={styles.addPostView}>
-      <Text style={styles.title}>Add Post</Text>
+      <Text style={styles.title}>Create a post</Text>
 
       <View style={styles.form}>
         <TextInput
           style={styles.input}
-          placeholder="Title"
+          placeholder="Write a title..."
+          placeholderTextColor={"#333"}
           value={title}
           onChangeText={setTitle}
         />
 
         <TextInput
           style={styles.textarea}
-          placeholder="Text"
+          placeholder="Write a text..."
           value={body}
           onChangeText={setBody}
           multiline={true}
         />
 
-        {/* {errorMsg && <Text style={styles.errorMsg}>{errorMsg}</Text>} */}
+        {errorMsg && (
+          <Text style={styles.errorMsg}>Enter a title and a text.</Text>
+        )}
 
         <Pressable style={styles.button} onPress={handleFormSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
@@ -138,7 +168,10 @@ const styles = StyleSheet.create({
   },
   errorMsg: {
     color: "crimson",
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: "500",
+    textAlign: "center",
+    marginBottom: 15,
   },
   button: {
     backgroundColor: "#054a91",
