@@ -67,13 +67,13 @@ export default function Home() {
             { item } // 'item' = property of 'data' object
           ) => (
             <Post
-              postId={item.id}
-              title={item.title}
-              body={item.body}
+              postId={item?.id}
+              title={item?.title}
+              body={item?.body}
               user={userData}
               // onDelete={handleDeletePost}
               onPress={() => console.log("Button pressed !")}
-              keyExtractor={(item) => item.id.tostring()}
+              // keyExtractor={(item) => item?.id.tostring()} // No need if, item already has a 'key' or 'id' prop
             />
           )}
           ListHeaderComponent={() => (
@@ -88,7 +88,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   homeView: {
     flex: 1,
-    backgroundColor: "#f8fcda",
+    backgroundColor: "#f3f6fb",
     paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 50,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "#f17300",
+    color: "#054a91",
     textAlign: "center",
     marginBottom: 30,
   },

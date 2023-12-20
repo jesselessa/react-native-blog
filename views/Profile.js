@@ -15,14 +15,14 @@ import { UserContext } from "../contexts/userContext.js";
 import { PostsContext } from "../contexts/postsContext.js";
 
 export default function Profile() {
-  const { setInputUserId, setIsLogged, userData } = useContext(UserContext);
+  const { setUserId, setIsLogged, userData } = useContext(UserContext);
   const { userPosts } = useContext(PostsContext);
 
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
   const [btnText, setBtnText] = useState("Add a picture");
 
-  // To select images/videos from the phone library or take a photo with the camera
+  // Select images/videos from phone library or take photo with camera
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -47,11 +47,7 @@ export default function Profile() {
           <View style={styles.imgBox}>
             <Image
               style={styles.img}
-              source={
-                selectedImage !== null
-                  ? { uri: selectedImage }
-                  : require("../assets/user.png")
-              }
+              source={selectedImage !== null && { uri: selectedImage }}
             ></Image>
           </View>
 
@@ -86,7 +82,7 @@ export default function Profile() {
             style={styles.logoutBtn}
             onPress={() => {
               navigate("/");
-              setInputUserId("");
+              setUserId("");
               setIsLogged(false);
             }}
           >
@@ -102,7 +98,7 @@ const styles = StyleSheet.create({
   profileView: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#f8fcda",
+    backgroundColor: "#f3f6fb",
     paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 50,
@@ -110,7 +106,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "#f17300",
+    color: "#054a91",
     textAlign: "center",
     marginBottom: 20,
   },
@@ -122,6 +118,7 @@ const styles = StyleSheet.create({
   },
   imgBtnContainer: {
     height: "40%",
+    width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
@@ -140,6 +137,7 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   btn: {
+    width: "80%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "teal",

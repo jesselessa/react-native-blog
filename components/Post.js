@@ -12,7 +12,7 @@ export default function Post({ postId, title, body, user, onPress }) {
 
   const navigate = useNavigate();
 
-    // Fetch post comments on component mounting
+  // Fetch post comments on component mounting
   useEffect(() => {
     const fetchPostComments = async (postId) => {
       try {
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   deleteButton: {
-    backgroundColor: "red",
+    backgroundColor: "crimson",
     justifyContent: "center",
     alignItems: "center",
     padding: 10,

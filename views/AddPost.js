@@ -98,7 +98,7 @@ export default function AddPost() {
 const styles = StyleSheet.create({
   addPostView: {
     flex: 1,
-    backgroundColor: "#f8fcda",
+    backgroundColor: "#f3f6fb",
     paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 50,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "#f17300",
+    color: "#054a91",
     textAlign: "center",
   },
   form: {

@@ -27,6 +27,9 @@ export default function Login() {
     } else {
       setIsLogged(false);
       setErrorMsg(true);
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 2000);
     }
   };
 
@@ -42,6 +45,7 @@ export default function Login() {
           value={userId}
           inputMode="numeric"
           onChangeText={setUserId}
+          autoComplete="off"
         />
         {errorMsg && (
           <Text style={styles.errorMsg}>Enter an ID between 1 and 10.</Text>
@@ -59,14 +63,14 @@ const styles = StyleSheet.create({
   loginView: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#f8fcda",
+    backgroundColor: "#f3f6fb",
   },
   title: {
     fontSize: 40,
     fontWeight: "bold",
     textAlign: "center",
     paddingTop: 10,
-    color: "#f17300",
+    color: "#054a91",
   },
   content: {
     flex: 1,
@@ -82,14 +86,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   errorMsg: {
     color: "crimson",
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "500",
     textAlign: "center",
-    marginBottom: 10,
+    marginBottom: 15,
   },
   button: {
     width: "100%",
@@ -98,6 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "teal",
     padding: 10,
+    marginTop: 5,
   },
   btnTxt: {
     color: "#fff",

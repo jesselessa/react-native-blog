@@ -22,7 +22,6 @@ export default function Comments() {
         );
 
         const data = await response.json();
-        console.log(data);
         setPostComs(data);
       } catch (error) {
         console.error("Failed fetching post comments:", error);
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
   commentsView: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#f8fcda",
+    backgroundColor: "#f3f6fb",
     paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 50,
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "#f17300",
+    color: "#054a91",
     textAlign: "center",
     marginBottom: 30,
   },
