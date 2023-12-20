@@ -1,6 +1,6 @@
-import { useEffect, useContext } from "react";
-import { StyleSheet, SafeAreaView, Text, FlatList } from "react-native";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-native";
+import { StyleSheet, SafeAreaView, Text, FlatList } from "react-native";
 
 // Components
 import Comment from "../components/Comment";
@@ -9,37 +9,43 @@ import Comment from "../components/Comment";
 import { PostsContext } from "../contexts/postsContext.js";
 
 export default function Comments() {
+  const { postComs, setPostComs } = useContext(PostsContext);
+
   const { postId } = useParams();
-  const { comments, fetchPostComments } = useContext(PostsContext);
 
+  // Fetch post comments on component mounting
   useEffect(() => {
-    fetchPostComments;
-  }, [postId]);
+    const fetchPostComments = async (postId) => {
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+        );
 
-  // async function fetchPostComments(postId) {
-  //   await fetch(
-  //     `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => setComments(data))
-  //     .catch((error) =>
-  //       console.error(
-  //         "Error fetching post comments localized in Comments.js:",
-  //         error
-  //       )
-  //     );
-  // }
+        const data = await response.json();
+        console.log(data);
+        setPostComs(data);
+      } catch (error) {
+        console.error("Failed fetching post comments:", error);
+      }
+    };
+
+    fetchPostComments(postId);
+  }, [postId, setPostComs]);
 
   return (
     <SafeAreaView style={styles.commentsView}>
       <Text style={styles.title}>Comments</Text>
       <FlatList
         style={styles.listContainer}
-        data={comments}
+        data={postComs}
         renderItem={({ item }) => (
-          <Comment name={item.name} email={item.email} body={item.body} />
+          <Comment
+            postId={postId}
+            name={item?.name}
+            email={item?.email}
+            body={item?.body}
+          />
         )}
-        keyExtractor={(item) => item.id.toString()}
       />
     </SafeAreaView>
   );
@@ -50,7 +56,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#f8fcda",
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
   title: {
     fontSize: 40,

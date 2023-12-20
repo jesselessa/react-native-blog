@@ -13,14 +13,14 @@ import { useNavigate } from "react-router-native";
 import { UserContext } from "../contexts/userContext.js";
 
 export default function Login() {
-  const { inputUserId, setInputUserId, setIsLogged } = useContext(UserContext);
+  const { userId, setUserId, setIsLogged } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const [errorMsg, setErrorMsg] = useState(false);
 
   const handleLogin = () => {
-    if (inputUserId >= 1 && inputUserId <= 10) {
+    if (userId >= 1 && userId <= 10) {
       setIsLogged(true);
       setErrorMsg(false);
       navigate("/home");
@@ -39,9 +39,9 @@ export default function Login() {
           placeholder="Enter your ID"
           placeholderTextColor={"#333"}
           style={styles.input}
-          value={inputUserId}
+          value={userId}
           inputMode="numeric"
-          onChangeText={setInputUserId}
+          onChangeText={setUserId}
         />
         {errorMsg && (
           <Text style={styles.errorMsg}>Enter an ID between 1 and 10.</Text>

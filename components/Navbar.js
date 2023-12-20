@@ -45,6 +45,7 @@ export default function Navbar() {
 
 const styles = StyleSheet.create({
   navbar: {
+    width: "100%",
     height: 50,
     backgroundColor: "teal",
     flexDirection: "row",
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     paddingVertical: 10,
     paddingHorizontal: 30,
-    width: "100%",
   },
 
   navBtn: {

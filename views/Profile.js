@@ -12,10 +12,11 @@ import * as ImagePicker from "expo-image-picker";
 
 // Context
 import { UserContext } from "../contexts/userContext.js";
+import { PostsContext } from "../contexts/postsContext.js";
 
 export default function Profile() {
-  const { setInputUserId, setIsLogged, userData, userPosts } =
-    useContext(UserContext);
+  const { setInputUserId, setIsLogged, userData } = useContext(UserContext);
+  const { userPosts } = useContext(PostsContext);
 
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
@@ -102,7 +103,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#f8fcda",
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
   title: {
     fontSize: 40,

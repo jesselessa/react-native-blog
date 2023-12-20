@@ -1,42 +1,52 @@
-import { useEffect, useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import { useContext, useEffect } from "react";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { useNavigate } from "react-router-native";
 
 // Context
 import { PostsContext } from "../contexts/postsContext.js";
 
-export default function Post({ title, body, user, postId, onDeletePost }) {
-  const { comments, isLoading, setIsLoading, fetchPostComments } =
+export default function Post({ postId, title, body, user, onPress }) {
+  // export default function Post({ postId, title, body, user, onDelete }) {
+  const { userPosts, setUserPosts, postComs, setPostComs } =
     useContext(PostsContext);
 
   const navigate = useNavigate();
 
-  // Fetch post comments on component mounting
+    // Fetch post comments on component mounting
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPostComments = async (postId) => {
       try {
-        setIsLoading(true);
-        await fetchPostComments(postId);
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+        );
+
+        const data = await response.json();
+        setPostComs(data);
       } catch (error) {
-        console.error("Error fetching comments:", error);
-      } finally {
-        setIsLoading(false);
+        console.error("Failed fetching post comments:", error);
       }
     };
-    fetchData();
-  }, [postId, fetchPostComments]);
 
-  const handleDelete = () => {
+    fetchPostComments(postId);
+  }, [postId, setPostComs]);
+
+  const handleDeletePost = (postId) => {
     Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Delete", onPress: onDeletePost, style: "destructive" },
+      {
+        text: "Cancel",
+        style: "cancel",
+        onPress: () => console.log("Cancel Pressed"),
+      },
+
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => {
+          // Delete post
+          const updatedPosts = userPosts.filter((post) => post.id !== postId);
+          setUserPosts(updatedPosts);
+        },
+      },
     ]);
   };
 
@@ -46,23 +56,21 @@ export default function Post({ title, body, user, postId, onDeletePost }) {
       <Text style={styles.username}>{user.username}</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{body}</Text>
-      {isLoading ? (
-        // To indicate content is loading
-        <ActivityIndicator size="large" color="#054a91" />
-      ) : (
-        <>
-          <Pressable
-            style={styles.button}
-            onPress={() => navigate(`/comments/${postId}`)}
-          >
-            <Text style={styles.btnTxt}>Commentaires ({comments.length})</Text>
-          </Pressable>
 
-          <Pressable style={styles.deleteButton} onPress={handleDelete}>
-            <Text style={styles.deleteButtonText}>Delete</Text>
-          </Pressable>
-        </>
-      )}
+      <Pressable
+        style={styles.button}
+        onPress={() => navigate(`/comments/${postId}`)}
+      >
+        <Text style={styles.btnTxt}>Commentaires ({postComs.length})</Text>
+      </Pressable>
+
+      <Pressable
+        style={styles.deleteButton}
+        // onPress={onDelete}
+        onPress={onPress}
+      >
+        <Text style={styles.deleteButtonText}>Delete</Text>
+      </Pressable>
     </View>
   );
 }

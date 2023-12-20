@@ -1,10 +1,9 @@
-import { useEffect, useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
   Text,
   FlatList,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 
@@ -16,53 +15,40 @@ import { PostsContext } from "../contexts/postsContext.js";
 import Post from "../components/Post.js";
 
 export default function Home() {
-  const { inputUserId, userData, setUserData, userPosts, setUserPosts } =
-    useContext(UserContext);
-  const { isLoading, setIsLoading } = useContext(PostsContext);
+  const { userId, userData, setUserData } = useContext(UserContext);
+  const { userPosts, setUserPosts, isLoading, setIsLoading } =
+    useContext(PostsContext);
 
-  // Fetch user's posts and info on component mounting
+  // Fetch user's info and posts on component mounting
   useEffect(() => {
-    const fetchUserPostsAndInfo = async (inputUserId) => {
+    const fetchUserInfoAndPosts = async () => {
       try {
         setIsLoading(true); // Start of loading
 
         // Get user's data
         const userInfoResponse = await fetch(
-          `https://jsonplaceholder.typicode.com/users/${inputUserId}`
+          `https://jsonplaceholder.typicode.com/users/${userId}`
         );
+
         const userInfo = await userInfoResponse.json();
         setUserData(userInfo);
 
         // Get user's posts
         const postsResponse = await fetch(
-          `https://jsonplaceholder.typicode.com/users/${inputUserId}/posts`
+          `https://jsonplaceholder.typicode.com/users/${userId}/posts`
         );
+
         const postsData = await postsResponse.json();
         setUserPosts(postsData);
       } catch (error) {
         console.error("Error fetching user's posts and info:", error);
       } finally {
-        setIsLoading(false); // End of loading
+        setIsLoading(false); // End of loading (success or not)
       }
     };
 
-    fetchUserPostsAndInfo(inputUserId);
-  }, [inputUserId, setUserData, setUserPosts, setIsLoading]);
-
-  const handleDeletePost = (postId) => {
-    Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Delete",
-        onPress: () => {
-          // Delete the post
-          const updatedPosts = userPosts.filter((post) => post.id !== postId);
-          setUserPosts(updatedPosts);
-        },
-        style: "destructive",
-      },
-    ]);
-  };
+    fetchUserInfoAndPosts();
+  }, [userId, setUserData, setUserPosts, setIsLoading]);
 
   return (
     <SafeAreaView style={styles.homeView}>
@@ -71,28 +57,28 @@ export default function Home() {
         // To indicate content is loading
         <ActivityIndicator size="large" color="#054a91" />
       ) : userPosts.length === 0 ? (
-        // No message
-        <Text style={styles.noPostMessage}>You have no posts yet.</Text>
+        <Text style={styles.noPostMessage}>You have no post yet.</Text>
       ) : (
-        // Render the list of posts
+        // Display list of posts
         <FlatList
           style={styles.listContainer}
           data={userPosts}
-          ListHeaderComponent={() => (
-            <Text style={styles.subtitle}>Find your posts on this page.</Text>
-          )}
           renderItem={(
             { item } // 'item' = property of 'data' object
           ) => (
             <Post
+              postId={item.id}
               title={item.title}
               body={item.body}
               user={userData}
-              postId={item.id}
-              onDeletePost={() => handleDeletePost(item.id)}
+              // onDelete={handleDeletePost}
+              onPress={() => console.log("Button pressed !")}
+              keyExtractor={(item) => item.id.tostring()}
             />
           )}
-          keyExtractor={(_data, index) => index.toString()}
+          ListHeaderComponent={() => (
+            <Text style={styles.subtitle}>Find your posts on this page.</Text>
+          )}
         />
       )}
     </SafeAreaView>
@@ -103,7 +89,9 @@ const styles = StyleSheet.create({
   homeView: {
     flex: 1,
     backgroundColor: "#f8fcda",
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
   title: {
     fontSize: 40,
@@ -126,7 +114,4 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 20,
   },
-  // homeContent: {
-  //   marginTop: 20,
-  // },
 });

@@ -15,50 +15,51 @@ import { UserContext } from "../contexts/userContext.js";
 import { PostsContext } from "../contexts/postsContext.js";
 
 export default function AddPost() {
-  const { inputUserId, userData } = useContext(UserContext);
+  const { userId, userData } = useContext(UserContext);
   const { userPosts, setUserPosts, newPost, setNewPost } =
     useContext(PostsContext);
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  // const [errorMsg, setErrorMsg] = useState("");
 
   const navigate = useNavigate();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (title && body) {
       setNewPost({
+        id: userPosts.length + 1,
         title: title,
         body: body,
         user: {
           name: userData.name,
           username: userData.username,
         },
-        postId: userPosts.length + 1,
       });
 
-      fetch(
-        `https://jsonplaceholder.typicode.com/posts?userId=${inputUserId}`,
-        {
-          method: "POST",
-          body: JSON.stringify(newPost),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          setUserPosts([...userPosts, newPost]);
-        })
-        .catch((error) => console.log("Error adding post:", error));
+      try {
+        const userPostsResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/posts?userId=${userId}`,
+          {
+            method: "POST",
+            body: JSON.stringify(newPost),
+          }
+        );
 
-      // Reset form fields
-      setTitle("");
-      setBody("");
+        const userPostsData = await userPostsResponse.json();
 
-      // Go to homepage
-      navigate("/home");
+        // Update user's posts
+        setUserPosts([...userPostsData, newPost]);
+        // Reset form fields
+        setTitle("");
+        setBody("");
+        // Go to homepage
+        navigate("/home");
+      } catch (error) {
+        console.error("Error adding post:", error);
+      }
     } else {
       setErrorMsg("Enter a title and a text.");
     }
@@ -69,17 +70,22 @@ export default function AddPost() {
       <Text style={styles.title}>Add Post</Text>
 
       <View style={styles.form}>
-        <Text style={styles.label}>Title</Text>
-        <TextInput style={styles.input} value={title} onChangeText={setTitle} />
-        <Text style={styles.label}>Text</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Title"
+          value={title}
+          onChangeText={setTitle}
+        />
+
         <TextInput
           style={styles.textarea}
+          placeholder="Text"
           value={body}
           onChangeText={setBody}
           multiline={true}
         />
 
-        {errorMsg && <Text style={styles.errorMsg}>{errorMsg}</Text>}
+        {/* {errorMsg && <Text style={styles.errorMsg}>{errorMsg}</Text>} */}
 
         <Pressable style={styles.button} onPress={handleFormSubmit}>
           <Text style={styles.buttonText}>Submit</Text>
@@ -92,8 +98,10 @@ export default function AddPost() {
 const styles = StyleSheet.create({
   addPostView: {
     flex: 1,
-    padding: 20,
     backgroundColor: "#f8fcda",
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
   title: {
     fontSize: 40,
