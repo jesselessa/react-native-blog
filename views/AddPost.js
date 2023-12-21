@@ -7,7 +7,6 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
-import { useNavigate } from "react-router-native";
 
 // Contexts
 import { UserContext } from "../contexts/userContext.js";
@@ -20,9 +19,8 @@ export default function AddPost() {
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [shownMsg, setShownMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
-
-  const navigate = useNavigate();
 
   // Fetch all users's posts and comments on component mounting
   useEffect(() => {
@@ -63,7 +61,7 @@ export default function AddPost() {
       });
 
       try {
-        const postsResponse = await fetch(
+        const newPostResponse = await fetch(
           `https://jsonplaceholder.typicode.com/posts`,
           {
             method: "POST",
@@ -71,16 +69,21 @@ export default function AddPost() {
           }
         );
 
-        const postsData = await postsResponse.json();
+        const newPostData = await newPostResponse.json();
 
-        // Update all posts
-        setPosts([...postsData, newPost]);
+        // Update posts
+        setPosts((prevPosts) => [...prevPosts, newPostData]);
+        // Note : use of this functional form, instead of setPosts([...posts, newPostData]), ensures that we are using the most recent state at the time of the update, even if other updates have occurred asynchronously
 
         // Reset form fields
         setTitle("");
         setBody("");
 
-        navigate("/home");
+        // Display success message temporarily
+        setShownMsg(true);
+        setTimeout(() => {
+          setShownMsg(false);
+        }, 2000);
       } catch (error) {
         console.error("Error adding post:", error);
       }
@@ -97,6 +100,8 @@ export default function AddPost() {
       <Text style={styles.title}>Create a post</Text>
 
       <View style={styles.form}>
+        {shownMsg && <Text style={styles.shownMsg}>Post created !</Text>}
+
         <TextInput
           style={styles.input}
           placeholder="Write a title..."
@@ -143,6 +148,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
+  },
+  shownMsg: {
+    color: "#054a91",
+    fontSize: 18,
+    fontWeight: "500",
+    textAlign: "center",
+    marginBottom: 20,
   },
   label: {
     fontSize: 22,
