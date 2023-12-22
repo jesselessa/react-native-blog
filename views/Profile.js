@@ -19,7 +19,7 @@ export default function Profile() {
   const { userPosts } = useContext(PostsContext);
 
   const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImgUrl, setSelectedImgUrl] = useState(null);
   const [btnText, setBtnText] = useState("Add a picture");
 
   // Select images/videos from phone library or take photo with camera
@@ -30,7 +30,7 @@ export default function Profile() {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      setSelectedImgUrl(result.assets[0].uri);
       setBtnText("Change picture");
     }
     // else {
@@ -47,7 +47,13 @@ export default function Profile() {
           <View style={styles.imgBox}>
             <Image
               style={styles.img}
-              source={selectedImage !== null && { uri: selectedImage }}
+              source={
+                selectedImgUrl
+                  ? {
+                      uri: selectedImgUrl,
+                    }
+                  : null
+              }
             ></Image>
           </View>
 
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f3f6fb",
     paddingTop: 20,
     paddingHorizontal: 20,
-    paddingBottom: 70,
+    paddingBottom: 50,
   },
   title: {
     fontSize: 40,
@@ -137,7 +143,7 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   btn: {
-    width: "80%",
+    width: "60%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "teal",

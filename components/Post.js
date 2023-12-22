@@ -1,14 +1,12 @@
 import { useContext, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
 
 // Context
 import { PostsContext } from "../contexts/postsContext.js";
 
-export default function Post({ postId, title, body, user, onPress }) {
-  // export default function Post({ postId, title, body, user, onDelete }) {
-  const { userPosts, setUserPosts, postComs, setPostComs } =
-    useContext(PostsContext);
+export default function Post({ postId, title, body, user, onDelete }) {
+  const { postComs, setPostComs } = useContext(PostsContext);
 
   const navigate = useNavigate();
 
@@ -30,26 +28,6 @@ export default function Post({ postId, title, body, user, onPress }) {
     fetchPostComments(postId);
   }, [postId, setPostComs]);
 
-  const handleDeletePost = (postId) => {
-    Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-        onPress: () => console.log("Cancel Pressed"),
-      },
-
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: () => {
-          // Delete post
-          const updatedPosts = userPosts.filter((post) => post.id !== postId);
-          setUserPosts(updatedPosts);
-        },
-      },
-    ]);
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{user.name}</Text>
@@ -64,11 +42,8 @@ export default function Post({ postId, title, body, user, onPress }) {
         <Text style={styles.btnTxt}>Commentaires ({postComs.length})</Text>
       </Pressable>
 
-      <Pressable
-        style={styles.deleteButton}
-        // onPress={onDelete}
-        onPress={onPress}
-      >
+      {/* Uncomment below if using 'handleDeletePost' function */}
+      <Pressable style={styles.deleteButton} onPress={onDelete}>
         <Text style={styles.deleteButtonText}>Delete</Text>
       </Pressable>
     </View>

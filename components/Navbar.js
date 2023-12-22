@@ -19,14 +19,14 @@ export default function Navbar() {
         <View style={styles.navbar}>
           <Icon
             name="home"
-            size={32}
+            size={33}
             color="#fff"
             onPress={() => navigate("/home")}
           />
 
           <Icon
             name="edit"
-            size={30}
+            size={33}
             color="#fff"
             onPress={() => navigate("/addpost")}
           />
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "fixed",
     bottom: 0,
-    paddingVertical: 10,
     paddingHorizontal: 30,
   },
 

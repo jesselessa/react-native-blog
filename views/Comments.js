@@ -1,19 +1,23 @@
 import { useContext, useEffect } from "react";
-import { useParams } from "react-router-native";
+import { ActivityIndicator } from "react-native";
+import { useParams, useNavigate } from "react-router-native";
 import { StyleSheet, SafeAreaView, Text, FlatList } from "react-native";
 
 // Components
 import Comment from "../components/Comment";
 
+// Icon
+import Icon from "react-native-vector-icons/FontAwesome";
+
 // Context
 import { PostsContext } from "../contexts/postsContext.js";
-import { ActivityIndicator } from "react-native-web";
 
 export default function Comments() {
   const { postComs, setPostComs, isLoading, setIsLoading } =
     useContext(PostsContext);
 
   const { postId } = useParams();
+  const navigate = useNavigate();
 
   // Fetch post comments on component mounting
   useEffect(() => {
@@ -37,9 +41,20 @@ export default function Comments() {
     fetchPostComments(postId);
   }, [postId, setPostComs]);
 
+  const handleBackPress = () => {
+    navigate(-1);
+  };
+
   return (
     <SafeAreaView style={styles.commentsView}>
       <Text style={styles.title}>Comments</Text>
+      <Icon
+        style={styles.backButton}
+        name="arrow-circle-left"
+        size={48}
+        color="crimson"
+        onPress={handleBackPress}
+      />
       {isLoading ? (
         <ActivityIndicator size="large" color="#054a91" />
       ) : postComs === 0 ? (
@@ -65,7 +80,6 @@ export default function Comments() {
 const styles = StyleSheet.create({
   commentsView: {
     flex: 1,
-    alignItems: "center",
     backgroundColor: "#f3f6fb",
     paddingTop: 20,
     paddingHorizontal: 20,
@@ -76,7 +90,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#054a91",
     textAlign: "center",
-    marginBottom: 25,
+    marginBottom: 20,
+  },
+  backButton: {
+    marginLeft: 20,
+    marginBottom: 15,
+  },
+  backButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    textAlign: "center",
   },
   noPostMessage: {
     fontSize: 22,

@@ -5,6 +5,7 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 // Contexts
@@ -50,6 +51,29 @@ export default function Home() {
     fetchUserInfoAndPosts(userId);
   }, [userId, setUserData, setUserPosts, setIsLoading]);
 
+  //TODO - Uncomment below if using a CRUD API
+  // Delete post
+  const handleDeletePost = (postId) => {
+    Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+        onPress: () => console.log("Cancel Pressed."),
+      },
+
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => {
+          // TODO - Uncomment with CRUD API
+          // const updatedPosts = userPosts.filter((post) => post.id !== postId);
+          // setUserPosts(updatedPosts);
+          console.log("Post deleted.");
+        },
+      },
+    ]);
+  };
+
   return (
     <SafeAreaView style={styles.homeView}>
       <Text style={styles.title}>Homepage</Text>
@@ -71,9 +95,9 @@ export default function Home() {
               title={item?.title}
               body={item?.body}
               user={userData}
-              // onDelete={handleDeletePost}
-              onPress={() => console.log("Button pressed !")}
-              // keyExtractor={(item) => item?.id.toString()} // No need if, item already has a 'key' or 'id' prop
+              onDelete={handleDeletePost}
+              // onDelete={handleDeletePost(item.id)}
+              // Note : keyExtractor={(item) => item?.id.toString()} // No need, if item already has a 'key' or 'id' prop
             />
           )}
           ListHeaderComponent={() => (

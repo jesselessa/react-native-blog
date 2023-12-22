@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
+import { useNavigate } from "react-router-native";
 
 // Contexts
 import { UserContext } from "../contexts/userContext.js";
@@ -21,6 +22,8 @@ export default function AddPost() {
   const [body, setBody] = useState("");
   const [shownMsg, setShownMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
+
+  const navigate = useNavigate();
 
   // Fetch all users's posts and comments on component mounting
   useEffect(() => {
@@ -73,16 +76,22 @@ export default function AddPost() {
 
         // Update posts
         setPosts((prevPosts) => [...prevPosts, newPostData]);
-        // Note : use of this functional form, instead of setPosts([...posts, newPostData]), ensures that we are using the most recent state at the time of the update, even if other updates have occurred asynchronously
+        // Note : using this functional form, instead of setPosts([...posts, newPostData]), ensures that we are using the most recent state at the time of the update, even if other updates have occurred asynchronously
 
         // Reset form fields
         setTitle("");
         setBody("");
 
-        // Display success message temporarily
+        // Display success message during 2s
         setShownMsg(true);
         setTimeout(() => {
           setShownMsg(false);
+        }, 2000);
+        console.log("New post created.");
+
+        // Go back to homepage after 2s
+        setTimeout(() => {
+          navigate("/home");
         }, 2000);
       } catch (error) {
         console.error("Error adding post:", error);
@@ -113,6 +122,7 @@ export default function AddPost() {
         <TextInput
           style={styles.textarea}
           placeholder="Write a text..."
+          placeholderTextColor={"#333"}
           value={body}
           onChangeText={setBody}
           multiline={true}
