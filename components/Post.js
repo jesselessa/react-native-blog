@@ -42,7 +42,6 @@ export default function Post({ postId, title, body, user, onDelete }) {
         <Text style={styles.btnTxt}>Commentaires ({postComs.length})</Text>
       </Pressable>
 
-      {/* Uncomment below if using 'handleDeletePost' function */}
       <Pressable style={styles.deleteButton} onPress={onDelete}>
         <Text style={styles.deleteButtonText}>Delete</Text>
       </Pressable>

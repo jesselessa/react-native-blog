@@ -31,6 +31,11 @@ export default function Home() {
           `https://jsonplaceholder.typicode.com/users/${userId}`
         );
 
+        if (!userInfoResponse.ok) {
+          const errorMsg = userInfoResponse.text();
+          throw new Error(errorMsg);
+        }
+
         const userInfo = await userInfoResponse.json();
         setUserData(userInfo);
 
@@ -39,6 +44,10 @@ export default function Home() {
           `https://jsonplaceholder.typicode.com/users/${userId}/posts`
         );
 
+        if (!userPostsResponse.ok) {
+          const errorMsg = userPostsResponse.text();
+          throw new Error(errorMsg);
+        }
         const userPostsData = await userPostsResponse.json();
         setUserPosts(userPostsData);
       } catch (error) {
@@ -51,24 +60,23 @@ export default function Home() {
     fetchUserInfoAndPosts(userId);
   }, [userId, setUserData, setUserPosts, setIsLoading]);
 
-  //TODO - Uncomment below if using a CRUD API
-  // Delete post
+  // Delete a post
   const handleDeletePost = (postId) => {
     Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
       {
         text: "Cancel",
         style: "cancel",
-        onPress: () => console.log("Cancel Pressed."),
+        onPress: () => Alert.alert("Cancel Pressed"),
       },
 
       {
         text: "Delete",
         style: "destructive",
+        // To simulate deletion client side
         onPress: () => {
-          // TODO - Uncomment with CRUD API
-          // const updatedPosts = userPosts.filter((post) => post.id !== postId);
-          // setUserPosts(updatedPosts);
-          console.log("Post deleted.");
+          const updatedPosts = userPosts.filter((post) => post.id !== postId);
+          setUserPosts(updatedPosts);
+          Alert.alert("Post deleted");
         },
       },
     ]);
@@ -88,16 +96,15 @@ export default function Home() {
           style={styles.listContainer}
           data={userPosts}
           renderItem={(
-            { item } // 'item' = property of 'data' object
+            { item } // each item from 'data' object
           ) => (
             <Post
               postId={item?.id}
               title={item?.title}
               body={item?.body}
               user={userData}
-              onDelete={handleDeletePost}
-              // onDelete={handleDeletePost(item.id)}
-              // Note : keyExtractor={(item) => item?.id.toString()} // No need, if item already has a 'key' or 'id' prop
+              onDelete={() => handleDeletePost(item.id)}
+              // keyExtractor={(item) => item?.id.toString()} // No need to explicitely use it here, because original data structure already has a 'key' or 'id' prop
             />
           )}
           ListHeaderComponent={() => (
@@ -136,6 +143,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 22,
     color: "#333",
+    textAlign: "center",
     marginBottom: 20,
   },
 });

@@ -29,6 +29,11 @@ export default function Comments() {
           `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
         );
 
+        if (!response.ok) {
+          const errorMsg = response.text();
+          throw new Error(errorMsg);
+        }
+
         const data = await response.json();
         setPostComs(data);
       } catch (error) {
