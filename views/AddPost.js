@@ -1,11 +1,12 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import {
+  StyleSheet,
   SafeAreaView,
   View,
   Text,
   TextInput,
   Pressable,
-  StyleSheet,
+  Keyboard,
 } from "react-native";
 import { useNavigate } from "react-router-native";
 
@@ -15,50 +16,20 @@ import { PostsContext } from "../contexts/postsContext.js";
 
 export default function AddPost() {
   const { userData } = useContext(UserContext);
-  const { posts, setPosts, setComments, newPost, setNewPost, setIsLoading } =
-    useContext(PostsContext);
+  const { setPosts } = useContext(PostsContext);
 
+  const [newPost, setNewPost] = useState({});
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [shownMsg, setShownMsg] = useState(false);
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
 
   const navigate = useNavigate();
-
-  // Fetch all users's posts and comments on component mounting
-  useEffect(() => {
-    const fetchAllPostsAndComs = async () => {
-      try {
-        setIsLoading(true); // Start of loading
-
-        // Get all posts
-        const postsResponse = await fetch(
-          `https://jsonplaceholder.typicode.com/posts`
-        );
-        const postsData = await postsResponse.json();
-        setPosts(postsData);
-
-        // Get all comments
-        const commentsResponse = await fetch(
-          `https://jsonplaceholder.typicode.com/comments`
-        );
-        const commentsData = await commentsResponse.json();
-        setComments(commentsData);
-      } catch (error) {
-        console.error("Error fetching all posts and comments:", error);
-      } finally {
-        setIsLoading(false); // End of loading (success or not)
-      }
-    };
-
-    fetchAllPostsAndComs();
-  }, [setPosts, setComments]);
 
   const handleFormSubmit = async () => {
     if (title && body) {
       setNewPost({
         userId: userData.id,
-        id: posts.length + 1,
         title: title,
         body: body,
       });
@@ -72,6 +43,11 @@ export default function AddPost() {
           }
         );
 
+        if (!newPostResponse.ok) {
+          const errorMsg = newPostResponse.text();
+          throw new Error(errorMsg);
+        }
+
         const newPostData = await newPostResponse.json();
 
         // Update posts
@@ -83,9 +59,9 @@ export default function AddPost() {
         setBody("");
 
         // Display success message during 2s
-        setShownMsg(true);
+        setShowSuccessMsg(true);
         setTimeout(() => {
-          setShownMsg(false);
+          setShowSuccessMsg(false);
         }, 2000);
         console.log("New post created.");
 
@@ -109,7 +85,9 @@ export default function AddPost() {
       <Text style={styles.title}>Create a post</Text>
 
       <View style={styles.form}>
-        {shownMsg && <Text style={styles.shownMsg}>Post created !</Text>}
+        {showSuccessMsg && (
+          <Text style={styles.showSuccessMsg}>Post created !</Text>
+        )}
 
         <TextInput
           style={styles.input}
@@ -123,9 +101,13 @@ export default function AddPost() {
           style={styles.textarea}
           placeholder="Write a text..."
           placeholderTextColor={"#333"}
+          keyboardType="default"
+          returnKeyType="done"
+          multiline={true}
+          blurOnSubmit={true}
+          onSubmitEditing={() => Keyboard.dismiss()}
           value={body}
           onChangeText={setBody}
-          multiline={true}
         />
 
         {errorMsg && (
@@ -159,7 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
   },
-  shownMsg: {
+  showSuccessMsg: {
     color: "#054a91",
     fontSize: 18,
     fontWeight: "500",

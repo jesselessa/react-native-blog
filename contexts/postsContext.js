@@ -7,7 +7,6 @@ export const PostsContextProvider = ({ children }) => {
   const [comments, setComments] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
   const [postId, setPostId] = useState(null);
-  const [newPost, setNewPost] = useState({});
   const [postComs, setPostComs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,8 +19,6 @@ export const PostsContextProvider = ({ children }) => {
     setUserPosts,
     postId,
     setPostId,
-    newPost,
-    setNewPost,
     isLoading,
     setIsLoading,
     postComs,
