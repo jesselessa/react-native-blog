@@ -9,6 +9,8 @@ import {
   Pressable,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import sharp from "sharp";
 
 // Context
 import { UserContext } from "../contexts/userContext.js";
@@ -24,14 +26,42 @@ export default function Profile() {
 
   // Select images/videos from phone library or take photo with camera
   const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        quality: 1,
+      });
 
-    if (!result.canceled) {
-      setSelectedImgUrl(result.assets[0].uri);
-      setBtnText("Change picture");
+      if (!result.canceled) {
+        // Resize image to optimize performance
+        const resizedImage = await resizeImage(result.assets[0].uri);
+        setSelectedImgUrl(resizedImage);
+        setBtnText("Change picture");
+      }
+    } catch (error) {
+      console.error("Error picking image:", error);
+    }
+  };
+
+  // Resize image
+  const resizeImage = async (uri) => {
+    try {
+      const imageInfo = await FileSystem.getInfoAsync(uri);
+      const newSize = 500; // Define a specific size
+
+      const resizedImage = await sharp(uri).resize(newSize).toBuffer();
+
+      const resizedImagePath = `${
+        FileSystem.cacheDirectory
+      }resized_${imageInfo.uri.split("/").pop()}`;
+      await FileSystem.writeAsStringAsync(resizedImagePath, resizedImage, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      return resizedImagePath;
+    } catch (error) {
+      console.error("Error resizing image:", error);
+      return uri; // Return original URL if error
     }
   };
 
