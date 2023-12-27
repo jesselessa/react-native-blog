@@ -15,9 +15,9 @@ import { UserContext } from "../contexts/userContext.js";
 export default function Login() {
   const { userId, setUserId, setIsLogged } = useContext(UserContext);
 
-  const navigate = useNavigate();
-
   const [errorMsg, setErrorMsg] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     if (userId >= 1 && userId <= 10) {

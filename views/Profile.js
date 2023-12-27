@@ -33,9 +33,6 @@ export default function Profile() {
       setSelectedImgUrl(result.assets[0].uri);
       setBtnText("Change picture");
     }
-    // else {
-    //   alert("You did not select any image.");
-    // }
   };
 
   return (
@@ -71,18 +68,18 @@ export default function Profile() {
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Posts number :</Text>{" "}
-            {userPosts.length ? userPosts.length : "Aucun"}
+            {userPosts.length ? userPosts.length : "No post."}
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Email :</Text> {userData.email}
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Phone :</Text>{" "}
-            {userData.phone ? userData.phone : "Non renseigné"}
+            {userData.phone ? userData.phone : "No information."}
           </Text>
           <Text style={styles.info}>
             <Text style={styles.infoTitle}>Website :</Text>{" "}
-            {userData.website ? userData.website : "Non renseigné"}
+            {userData.website ? userData.website : "No information."}
           </Text>
           <Pressable
             style={styles.logoutBtn}

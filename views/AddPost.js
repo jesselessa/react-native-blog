@@ -16,7 +16,7 @@ import { PostsContext } from "../contexts/postsContext.js";
 
 export default function AddPost() {
   const { userData } = useContext(UserContext);
-  const { setPosts } = useContext(PostsContext);
+  const { posts, setPosts } = useContext(PostsContext);
 
   const [newPost, setNewPost] = useState({});
   const [title, setTitle] = useState("");
@@ -29,6 +29,7 @@ export default function AddPost() {
   const handleFormSubmit = async () => {
     if (title && body) {
       setNewPost({
+        id: posts.length + 1,
         userId: userData.id,
         title: title,
         body: body,
@@ -63,7 +64,6 @@ export default function AddPost() {
         setTimeout(() => {
           setShowSuccessMsg(false);
         }, 2000);
-        console.log("New post created.");
 
         // Go back to homepage after 2s
         setTimeout(() => {

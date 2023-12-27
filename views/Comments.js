@@ -17,6 +17,7 @@ export default function Comments() {
     useContext(PostsContext);
 
   const { postId } = useParams();
+  
   const navigate = useNavigate();
 
   // Fetch post comments on component mounting

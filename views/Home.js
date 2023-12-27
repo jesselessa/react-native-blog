@@ -60,7 +60,7 @@ export default function Home() {
     fetchUserInfoAndPosts(userId);
   }, [userId, setUserData, setUserPosts, setIsLoading]);
 
-  // Delete a post
+  // Simulate post deletion
   const handleDeletePost = (postId) => {
     Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
       {
@@ -72,7 +72,6 @@ export default function Home() {
       {
         text: "Delete",
         style: "destructive",
-        // To simulate deletion client side
         onPress: () => {
           const updatedPosts = userPosts.filter((post) => post.id !== postId);
           setUserPosts(updatedPosts);
