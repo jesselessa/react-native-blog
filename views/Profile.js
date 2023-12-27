@@ -31,7 +31,7 @@ export default function Profile() {
       });
 
       if (!result.canceled) {
-        setSelectedImgUrl(selectedImgUrl);
+        setSelectedImgUrl(result.assets[0].uri);
         setBtnText("Change picture");
       }
     } catch (error) {
