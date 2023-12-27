@@ -101,8 +101,7 @@ export default function AddPost() {
           style={styles.textarea}
           placeholder="Write a text..."
           placeholderTextColor={"#333"}
-          keyboardType="default"
-          returnKeyType="done"
+          enterKeyHint="done"
           multiline={true}
           blurOnSubmit={true}
           onSubmitEditing={() => Keyboard.dismiss()}
