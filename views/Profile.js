@@ -46,22 +46,31 @@ export default function Profile() {
   // Resize image
   const resizeImage = async (uri) => {
     try {
+      // Get info about image using its URI
       const imageInfo = await FileSystem.getInfoAsync(uri);
-      const newSize = 500; // Define a specific size
 
+      // Define a new size for image
+      const newSize = 500;
+
+      // Use "sharp" library to resize image
       const resizedImage = await sharp(uri).resize(newSize).toBuffer();
 
+      // Define cache directory path for resized image
       const resizedImagePath = `${
         FileSystem.cacheDirectory
       }resized_${imageInfo.uri.split("/").pop()}`;
+
+      // Write resized image to cache directory
       await FileSystem.writeAsStringAsync(resizedImagePath, resizedImage, {
         encoding: FileSystem.EncodingType.Base64,
       });
 
+      // Return path of resized image
       return resizedImagePath;
     } catch (error) {
       console.error("Error resizing image:", error);
-      return uri; // Return original URL if error
+      // If error, return original URI
+      return uri;
     }
   };
 
