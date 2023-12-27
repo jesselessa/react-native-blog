@@ -9,8 +9,6 @@ import {
   Pressable,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
-import sharp from "sharp";
 
 // Context
 import { UserContext } from "../contexts/userContext.js";
@@ -33,44 +31,11 @@ export default function Profile() {
       });
 
       if (!result.canceled) {
-        // Resize image to optimize performance
-        const resizedImage = await resizeImage(result.assets[0].uri);
-        setSelectedImgUrl(resizedImage);
+        setSelectedImgUrl(selectedImgUrl);
         setBtnText("Change picture");
       }
     } catch (error) {
       console.error("Error picking image:", error);
-    }
-  };
-
-  // Resize image
-  const resizeImage = async (uri) => {
-    try {
-      // Get info about image using its URI
-      const imageInfo = await FileSystem.getInfoAsync(uri);
-
-      // Define a new size for image
-      const newSize = 500;
-
-      // Use "sharp" library to resize image
-      const resizedImage = await sharp(uri).resize(newSize).toBuffer();
-
-      // Define cache directory path for resized image
-      const resizedImagePath = `${
-        FileSystem.cacheDirectory
-      }resized_${imageInfo.uri.split("/").pop()}`;
-
-      // Write resized image to cache directory
-      await FileSystem.writeAsStringAsync(resizedImagePath, resizedImage, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      // Return path of resized image
-      return resizedImagePath;
-    } catch (error) {
-      console.error("Error resizing image:", error);
-      // If error, return original URI
-      return uri;
     }
   };
 
