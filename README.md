@@ -1,15 +1,15 @@
 # react-native-blog
 
-A React Native blog app using Expo tools, which allows users to fetch content from JSONPlaceholder API.
+A blog created with React Native and Expo tools fetching data from JSONPlaceholder API
 
 ## Prerequisites
 
-First, install Expo, an open-source framework for apps that runs natively on Android, iOS, and the web, on your device.
+First, install on your device Expo, an open-source framework for apps that runs natively on Android, iOS and the web.
 
-Then, to use Expo, you need to have the following tools installed on your machine:
+Then, to use Expo, you need to have the following tools installed on your machine :
 
-- Node.js LTS release - Only Node.js LTS releases (even-numbered) are recommended.
-- Git for source control.
+- Node.js LTS release (recommended) ;
+- Git, for source control ;
 - Watchman (for Linux or macOS users).
 
 ## Usage of JSONPlaceholder API
