@@ -30,25 +30,13 @@ The application navigation is managed by React Router Native.
 
 ## Screenshots
 
-### Login page
+### Login, homepage and create a post
 
-![Login](./assets/screenshots/login.png)
+![Screenshot1](./assets/screenshots/screenshot1.png)
 
-### Homepage
+### Comments and profile pages
 
-![Homepage](./assets/screenshots/homepage.png)
-
-### Create a post
-
-![Create a post](./assets/screenshots/create.png)
-
-### Comments page
-
-![Comments](./assets/screenshots/comments.png)
-
-### Profile
-
-![Profile](./assets/screenshots/profile.png)
+![Screenshot2](./assets/screenshots/screenshot2.png)
 
 ## Main features
 
