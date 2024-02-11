@@ -6,11 +6,6 @@ This project is a blog created with React Native, using data from JSONPlaceholde
 
 - [Stack](#stack)
 - [Screenshots](#screenshots)
-  - [Login page](#login-page)
-  - [Homepage](#homepage)
-  - [Create a post](#create-a-post)
-  - [Comments page](#comments-page)
-  - [Profile](#profile)
 - [Main features](#main-features)
 - [Prerequisites](#prerequisites)
 - [Recommended tools](#recommended-tools)
@@ -22,9 +17,9 @@ This project is a blog created with React Native, using data from JSONPlaceholde
 
 ## Stack
 
-This project has been created with React Native and Expo tools.\
+This project has been created with React Native and Expo tools.
 
-It uses data fetched from [JSONPlaceholder API](https://jsonplaceholder.typicode.com/).\
+It uses data fetched from [JSONPlaceholder API](https://jsonplaceholder.typicode.com/).
 
 The application navigation is managed by React Router Native.
 
@@ -46,27 +41,29 @@ The application navigation is managed by React Router Native.
 
 ## Prerequisites
 
-1. Install `Expo` on your device, which is an open-source framework for applications that runs natively on Android, iOS and the web.\
+1. Install `Expo` on your device, which is an open-source framework for applications that runs natively on Android, iOS and the web.
 
 To use Expo, you need to have the following tools installed on your machine :
 
 - `Node.js v20.10.0 LTS` ;
 - `Git`, for source control ;
-- `Watchman` (for Linux or macOS users).\
+- `Watchman` (for Linux or macOS users).
 
-You can find more information on Expo [here](https://docs.expo.dev/get-started/installation/).\
+You can find more information on Expo [here](https://docs.expo.dev/get-started/installation/).
 
 2. Install `Expo Go` on your smartphone, which is a free, open-source sandbox app for learning and experimenting with React Native on Android and iOS. [More information](https://docs.expo.dev/get-started/expo-go/).
 
 ## Recommended tools
 
-- `Yarn` for faster and more reliable dependency management. Use this instead of `npm` and `npx`.
+- `Yarn` for faster and more reliable dependency management.
 - `VS Code Editor` and `VS Code Expo Extension` for easier debugging and app config autocomplete.
 - `PowerShell` (the default terminal in VS Code) or `Bash` via WSL for developers who prefer Windows.
 
 ## Use of JSONPlaceholder API
 
-The JSONPlaceholder API is a fake REST API used for testing purposes. It does not support modification operations such as POST, PUT, DELETE. Therefore, if you want to make full use of this application and actually create or delete a post, you will have to use or create an API that supports CRUD operations.
+The JSONPlaceholder API is a fake REST API used for testing purposes. It does not support modification operations such as POST, PUT, DELETE.
+
+Therefore, if you want to make full use of this application and actually create or delete a post, you will have to use or create an API that supports CRUD operations.
 
 ## Run the project locally
 
@@ -87,7 +84,7 @@ To stay updated with the project latest changes, you can pull them from the repo
 
 ## Contact
 
-For inquiries, contact me via [LinkedIn](https://www.linkedin.com/in/jessica-elessa/).
+For inquiries, you contact me via [LinkedIn](https://www.linkedin.com/in/jessica-elessa/).
 
 ---
 
