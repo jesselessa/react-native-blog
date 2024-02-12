@@ -84,7 +84,7 @@ To stay updated with the project latest changes, you can pull them from the repo
 
 ## Contact
 
-For inquiries, you contact me via [LinkedIn](https://www.linkedin.com/in/jessica-elessa/).
+For inquiries, you can contact me via [LinkedIn](https://www.linkedin.com/in/jessica-elessa/).
 
 ---
 
