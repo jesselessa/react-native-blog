@@ -1,6 +1,6 @@
 # react-native-blog
 
-This project is a blog created with React Native, using data from JSONPlaceholder API.
+This project is a blog created with React Native, whose content is fetched from JSONPlaceholder API.
 
 ## Table of Contents
 
