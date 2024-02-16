@@ -17,11 +17,11 @@ This project is a blog created with React Native, whose content is fetched from 
 
 ## Stack
 
-This project has been created with React Native and Expo tools.
+This project was created with React Native and Expo tools.
 
 It uses data fetched from [JSONPlaceholder API](https://jsonplaceholder.typicode.com/).
 
-The application navigation is managed by React Router Native.
+The application navigation was managed by React Router Native.
 
 ## Screenshots
 
@@ -45,7 +45,7 @@ The application navigation is managed by React Router Native.
 
 To use Expo, you need to have the following tools installed on your machine :
 
-- `Node.js v20.10.0 LTS` ;
+- `Node.js v20.10.0 LTS` or later ;
 - `Git`, for source control ;
 - `Watchman` (for Linux or macOS users).
 
